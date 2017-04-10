@@ -1,0 +1,32 @@
+Metrics/AbcSize:
+  Max: 24
+Metrics/LineLength:
+  Max: 120
+Metrics/ClassLength:
+  CountComments: false
+  Max: 120
+Metrics/MethodLength:
+  CountComments: false
+  Max: 20
+Metrics/CyclomaticComplexity:
+  Max: 7
+
+Layout/EmptyLinesAroundClassBody:
+  Enabled: false
+Layout/EmptyLinesAroundModuleBody:
+  Enabled: false
+Layout/EmptyLinesAroundBlockBody:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/MethodMissing:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+AllCops:
+  TargetRubyVersion: 2.3
+  Exclude:
+    - 'spec/**/*'
