@@ -22,18 +22,23 @@ module LiveQA
     attr_accessor :proxy_url
 
     ##
-    # @return [String] http secure
+    # @return [Boolean] http secure
     attr_accessor :http_secure
+
+    ##
+    # @return [Boolean] service is enable
+    attr_accessor :enabled
 
     ##
     # @param [Hash{Symbol=>Object}]
     # Initialize and validate the configuration
-    def initialize(api_key: nil, proxy_url: nil, api_host: 'api.liveqa.io', api_version: 'v1', http_secure: true)
-      self.api_key     = api_key
-      self.api_host    = api_host
-      self.api_version = api_version
-      self.proxy_url   = proxy_url
-      self.http_secure = http_secure
+    def initialize(options = {})
+      self.api_key     = options[:api_key]
+      self.api_host    = options[:api_host] || 'api.liveqa.io'
+      self.api_version = options[:api_version] || 'v1'
+      self.proxy_url   = options[:proxy_url]
+      self.http_secure = options[:http_secure] || true
+      self.enabled     = options[:enabled] || true
     end
 
     ##

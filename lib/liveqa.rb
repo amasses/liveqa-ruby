@@ -49,6 +49,8 @@ module LiveQA
     #
     # @return [LiveQA::Object] response from the server
     def track(name, params = {}, properties = {}, request_options = {})
+      return true unless configurations.enabled
+
       params[:type] = 'track'
 
       event = Event.create(name, params, properties, request_options)
