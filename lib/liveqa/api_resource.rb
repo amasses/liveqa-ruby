@@ -61,8 +61,9 @@ module LiveQA
       # @return [Hash] response
       # @raise [LiveQA::RequestError] if the request is invalid
       def request(method, path, payload = {}, options = {})
-        url_params     = Util.encode_parameters(payload) if method == :get
-        uri            = build_endpoint_url(path, url_params)
+        payload    = Util.deep_obfuscate_value(payload, configurations.obfuscated_fields)
+        url_params = Util.encode_parameters(payload) if method == :get
+        uri        = build_endpoint_url(path, url_params)
 
         request_options = Util.compact(
           method:  method,

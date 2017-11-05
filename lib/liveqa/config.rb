@@ -30,15 +30,20 @@ module LiveQA
     attr_accessor :enabled
 
     ##
+    # @return [Array[String]] fields to obfuscate
+    attr_accessor :obfuscated_fields
+
+    ##
     # @param [Hash{Symbol=>Object}]
     # Initialize and validate the configuration
     def initialize(options = {})
-      self.api_key     = options[:api_key]
-      self.api_host    = options[:api_host] || 'api.liveqa.io'
-      self.api_version = options[:api_version] || 'v1'
-      self.proxy_url   = options[:proxy_url]
-      self.http_secure = options[:http_secure] || true
-      self.enabled     = options[:enabled] || true
+      self.api_key          = options[:api_key]
+      self.api_host         = options[:api_host] || 'api.liveqa.io'
+      self.api_version      = options[:api_version] || 'v1'
+      self.proxy_url        = options[:proxy_url]
+      self.http_secure      = options[:http_secure] || true
+      self.enabled          = options[:enabled] || true
+      self.obfuscated_fields = options[:obfuscated_fields] || []
     end
 
     ##
@@ -46,6 +51,8 @@ module LiveQA
     # Raise when configuration are not valid
     # @return [Boolean] true
     def valid!
+      format!
+
       %i[api_key api_host api_version].each do |field|
         validate_presence(field)
       end
@@ -54,6 +61,15 @@ module LiveQA
     end
 
     private
+
+    ##
+    # Format configuration fields
+    #
+    # * Set obfuscated_fields to string
+    #
+    def format!
+      self.obfuscated_fields = obfuscated_fields.map(&:to_s)
+    end
 
     def validate_presence(field)
       raise LiveQA::ConfigurationError, "#{field} can't be blank" if send(field).nil? || send(field).empty?

@@ -3,6 +3,7 @@ module LiveQA
     class << self
 
       DATE_FORMAT = '%Y/%m/%d'.freeze
+      OBFUSCATED  = '[HIDDEN]'.freeze
 
       ##
       # Remove nil value from hash
@@ -45,10 +46,54 @@ module LiveQA
           .downcase
       end
 
-      def hash_except(hash, *keys)
-        copy = hash.dup
-        keys.each { |key| copy.delete(key) }
-        copy
+      ##
+      # Deep convert hash to underscore case keys
+      #
+      # @param [Hash] hash to transform
+      #
+      # @return [Hash] transformed
+      def deep_underscore_key(hash_object)
+        deep_transform_keys_in_object(hash_object) do |key|
+          begin
+            underscore(key).to_sym
+          rescue
+            key
+          end
+        end
+      end
+
+      ##
+      # Deep remove key from hash
+      #
+      # @param [Hash] hash to obfuscate
+      #
+      # @return [Hash] hash obfuscated
+      def deep_obfuscate_value(object, fields)
+        case object
+        when Hash
+          object.each_with_object({}) do |(key, value), result|
+            result[key] = fields.include?(key.to_s) ? OBFUSCATED : deep_obfuscate_value(value, fields)
+          end
+        when Array
+          object.map { |e| deep_obfuscate_value(e, fields) }
+        else
+          object
+        end
+      end
+
+      private
+
+      def deep_transform_keys_in_object(object, &block)
+        case object
+        when Hash
+          object.each_with_object({}) do |(key, value), result|
+            result[yield(key)] = deep_transform_keys_in_object(value, &block)
+          end
+        when Array
+          object.map { |e| deep_transform_keys_in_object(e, &block) }
+        else
+          object
+        end
       end
 
     end
