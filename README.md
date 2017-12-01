@@ -25,7 +25,12 @@ end
 ## Usage
 
 ```ruby
-LiveQA.track('my event', { user_id: 42 }, { order_id: 84 });
+LiveQA.track('my event', { 
+    user_id: 42,
+    properties: {
+        order_id: 84 
+    }
+});
 ```
 
 ## Issues

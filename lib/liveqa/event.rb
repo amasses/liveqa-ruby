@@ -14,16 +14,13 @@ module LiveQA
       ##
       # Send an event to the server
       #
-      # @param [String] event name
-      # @param [Hash] properties
+      # @param [Hash] params
       # @param [Hash] request_options
       #
       # @return [LiveQA::Response] with the response from the server
-      def create(name, params = {}, properties = {}, request_options = {})
+      def create(params = {}, request_options = {})
         payload = {
-          name:       name,
           message_id: SecureRandom.uuid,
-          properties: properties,
           context:    context,
           timestamp:  Time.now.to_i
         }.merge(params)

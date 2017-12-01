@@ -44,16 +44,37 @@ module LiveQA
     # Send a track event to the server
     #
     # @param [String] event name
-    # @param [Hash] params of the hash. eg: user_id, identifier_id, ...
-    # @param [Hash] properties of the event. eg: total_amount, ...
+    # @param [String] user id from your database
+    # @param [Hash] params to be send
+    # @param [Hash] options for the request
     #
     # @return [LiveQA::Object] response from the server
-    def track(name, params = {}, properties = {}, request_options = {})
+    def track(name, params = {}, request_options = {})
       return true unless configurations.enabled
 
       params[:type] = 'track'
+      params[:name] = name
 
-      event = Event.create(name, params, properties, request_options)
+      event = Event.create(params, request_options)
+
+      event.successful?
+    end
+
+    ##
+    # Send an identify event to the server
+    #
+    # @param [String] user id from your database
+    # @param [Hash] params to be send
+    # @param [Hash] options for the request
+    #
+    # @return [LiveQA::Object] response from the server
+    def identify(user_id, params = {}, request_options = {})
+      return true unless configurations.enabled
+
+      params[:type]    = 'identify'
+      params[:user_id] = user_id
+
+      event = Event.create(params, request_options)
 
       event.successful?
     end
