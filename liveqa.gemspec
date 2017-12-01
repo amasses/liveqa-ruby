@@ -18,9 +18,9 @@ Gem::Specification.new do |s|
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- spec/*`.split("\n")
 
-  s.add_development_dependency 'faker', '>= 1.7.0'
+  s.add_development_dependency 'faker', '~> 1.8.4'
   s.add_development_dependency 'rake', '>= 0.9.0'
   s.add_development_dependency 'pry'
   s.add_development_dependency 'rspec', '~> 3.5'
-  s.add_development_dependency 'rubocop', '~> 0.47'
+  s.add_development_dependency 'rubocop', '= 0.49.1'
 end

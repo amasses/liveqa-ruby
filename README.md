@@ -1,5 +1,7 @@
 # LiveQA
 
+[![Build Status](https://travis-ci.org/arkes/liveqa-ruby.svg?branch=master)](https://travis-ci.org/arkes/liveqa-ruby)
+
 LiveQA ruby integration for [LiveQA](https://www.liveqa.io)
 
 ## Installation

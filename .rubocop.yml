@@ -30,3 +30,8 @@ AllCops:
   TargetRubyVersion: 2.3
   Exclude:
     - 'spec/**/*'
+  Exclude:
+    - bin/**/*
+    - vendor/**/*
+    - tmp/**/*
+    - spec/**/*
