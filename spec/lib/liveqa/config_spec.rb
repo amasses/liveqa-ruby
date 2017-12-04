@@ -4,7 +4,7 @@ describe LiveQA::Config do
   subject(:config) { LiveQA::Config.new(params) }
 
   describe  '#initialize' do
-    let(:params) {{ api_key: 'LWbtEmD3Q1INrlBgMZ_pTVEXHt2B8UuyLF3S1wfQ3W3Lcl6NY3rX4jrL' }}
+    let(:params) {{ api_key: SecureRandom.hex }}
 
     it { expect(config.valid!).to be_truthy }
 
@@ -17,11 +17,23 @@ describe LiveQA::Config do
     end
 
     context 'format obfuscated_fields' do
-      let(:params) {{ api_key: 'LWbtEmD3Q1INrlBgMZ_pTVEXHt2B8UuyLF3S1wfQ3W3Lcl6NY3rX4jrL', obfuscated_fields: %i[password password_confirmation] }}
+      let(:params) {{ api_key: SecureRandom.hex, obfuscated_fields: %i[password password_confirmation] }}
 
       before { config.valid! }
 
       it { expect(config.obfuscated_fields).to match_array(%w[password password_confirmation]) }
+    end
+
+    context 'async_handler' do
+      context 'sidekiq' do
+        let(:params) {{
+          api_key: SecureRandom.hex,
+          async_handler: :sidekiq
+        }}
+        before { config.valid! }
+
+        it { expect(config.async_handler).to be_a(LiveQA::AsyncHandlers::Sidekiq) }
+      end
     end
 
   end

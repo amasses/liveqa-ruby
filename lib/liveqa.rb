@@ -1,8 +1,13 @@
+# Lib
 require 'securerandom'
 require 'net/http'
 require 'ostruct'
 require 'json'
 
+# Async
+require 'liveqa/async_handlers/base'
+
+# Base
 require 'liveqa/version'
 require 'liveqa/library_name'
 require 'liveqa/util'
@@ -14,6 +19,10 @@ require 'liveqa/api_resource'
 
 # Operations
 require 'liveqa/api_operation/save'
+
+# Messages
+require 'liveqa/messages/base'
+require 'liveqa/messages/context'
 
 # Resources
 require 'liveqa/event'
@@ -45,17 +54,23 @@ module LiveQA
     #
     # @param [String] event name
     # @param [String] user id from your database
-    # @param [Hash] params to be send
+    # @param [Hash] payload to be send
     # @param [Hash] options for the request
     #
     # @return [LiveQA::Object] response from the server
-    def track(name, params = {}, request_options = {})
+    def track(name, payload = {}, request_options = {})
       return true unless configurations.enabled
 
-      params[:type] = 'track'
-      params[:name] = name
+      payload[:type] = 'track'
+      payload[:name] = name
 
-      event = Event.create(params, request_options)
+      payload = Event.build_payload(payload)
+
+      if configurations.async_handler
+        return configurations.async_handler.enqueue('LiveQA::Event', 'create', payload, request_options)
+      end
+
+      event = Event.create(payload, request_options)
 
       event.successful?
     end
@@ -64,17 +79,23 @@ module LiveQA
     # Send an identify event to the server
     #
     # @param [String] user id from your database
-    # @param [Hash] params to be send
+    # @param [Hash] payload to be send
     # @param [Hash] options for the request
     #
     # @return [LiveQA::Object] response from the server
-    def identify(user_id, params = {}, request_options = {})
+    def identify(user_id, payload = {}, request_options = {})
       return true unless configurations.enabled
 
-      params[:type]    = 'identify'
-      params[:user_id] = user_id
+      payload[:type]    = 'identify'
+      payload[:user_id] = user_id
 
-      event = Event.create(params, request_options)
+      payload = Event.build_payload(payload)
+
+      if configurations.async_handler
+        return configurations.async_handler.enqueue('Event', 'create', payload, request_options)
+      end
+
+      event = Event.create(payload, request_options)
 
       event.successful?
     end

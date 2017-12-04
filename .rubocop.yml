@@ -26,6 +26,9 @@ Style/MethodMissing:
 Documentation:
   Enabled: false
 
+Bundler/DuplicatedGem:
+  Enabled: false
+
 AllCops:
   TargetRubyVersion: 2.3
   Exclude:

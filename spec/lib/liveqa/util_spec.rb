@@ -35,6 +35,26 @@ describe LiveQA::Util do
     it { expect(LiveQA::Util.deep_underscore_key(payload)).to eq(expected) }
   end
 
+describe '#deep_stringify_key' do
+    let(:payload) {{
+      my_key: 'test',
+      another_key: {
+        last_key: 'test',
+        valid_key: 'test'
+      }
+    }}
+
+    let(:expected) {{
+      'my_key' => 'test',
+      'another_key' => {
+        'last_key' => 'test',
+        'valid_key' => 'test'
+      }
+    }}
+
+    it { expect(LiveQA::Util.deep_stringify_key(payload)).to eq(expected) }
+  end
+
   describe '#deep_obfuscate_value' do
     let(:fields) { ['password', 'credit_card'] }
     let(:payload) {{

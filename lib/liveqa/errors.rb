@@ -5,6 +5,10 @@ module LiveQA
   class ConfigurationError < StandardError; end
 
   ##
+  # Missing Implementation Error
+  class MissingImplementation < StandardError; end
+
+  ##
   # Request to API Error
   class RequestError < StandardError; end
 

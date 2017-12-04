@@ -63,6 +63,22 @@ module LiveQA
       end
 
       ##
+      # Deep convert hash to string case keys
+      #
+      # @param [Hash] hash to transform
+      #
+      # @return [Hash] transformed
+      def deep_stringify_key(hash_object)
+        deep_transform_keys_in_object(hash_object) do |key|
+          begin
+            key.to_s
+          rescue
+            key
+          end
+        end
+      end
+
+      ##
       # Deep remove key from hash
       #
       # @param [Hash] hash to obfuscate

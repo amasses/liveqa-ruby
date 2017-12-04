@@ -5,6 +5,13 @@ module LiveQA
   # Represent the LiveQA configuration for the API
   class Config
 
+    ASYNC_HANDLERS = {
+      sidekiq: {
+        class:   'LiveQA::AsyncHandlers::Sidekiq',
+        require: 'liveqa/async_handlers/sidekiq'
+      }
+    }.freeze
+
     ##
     # @return [String] API key
     attr_accessor :api_key
@@ -34,16 +41,26 @@ module LiveQA
     attr_accessor :obfuscated_fields
 
     ##
+    # @return [Null|Symbol|Proc] asynchronous handler
+    attr_accessor :async_handler
+
+    ##
+    # @return [Hash] options for asynchronous handler
+    attr_accessor :async_options
+
+    ##
     # @param [Hash{Symbol=>Object}]
     # Initialize and validate the configuration
     def initialize(options = {})
-      self.api_key          = options[:api_key]
-      self.api_host         = options[:api_host] || 'api.liveqa.io'
-      self.api_version      = options[:api_version] || 'v1'
-      self.proxy_url        = options[:proxy_url]
-      self.http_secure      = options[:http_secure] || true
-      self.enabled          = options[:enabled] || true
+      self.api_key           = options[:api_key]
+      self.api_host          = options[:api_host] || 'api.liveqa.io'
+      self.api_version       = options[:api_version] || 'v1'
+      self.proxy_url         = options[:proxy_url]
+      self.http_secure       = options[:http_secure] || true
+      self.enabled           = options[:enabled] || true
       self.obfuscated_fields = options[:obfuscated_fields] || []
+      self.async_handler     = options[:async_handler]
+      self.async_options     = options[:async_options] || {}
     end
 
     ##
@@ -66,9 +83,15 @@ module LiveQA
     # Format configuration fields
     #
     # * Set obfuscated_fields to string
+    # * Change to the class for async handler
     #
     def format!
       self.obfuscated_fields = obfuscated_fields.map(&:to_s)
+
+      return unless ASYNC_HANDLERS[async_handler]
+
+      require ASYNC_HANDLERS[async_handler][:require]
+      self.async_handler = Object.const_get(ASYNC_HANDLERS[async_handler][:class]).new(async_options)
     end
 
     def validate_presence(field)
