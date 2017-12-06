@@ -6,4 +6,6 @@ else
   gem 'sidekiq', '>= 2.13.0'
 end
 
+gem 'rack'
+
 gemspec

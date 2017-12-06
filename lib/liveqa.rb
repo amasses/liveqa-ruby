@@ -16,6 +16,7 @@ require 'liveqa/errors'
 require 'liveqa/liveqa_object'
 require 'liveqa/request'
 require 'liveqa/api_resource'
+require 'liveqa/store'
 
 # Operations
 require 'liveqa/api_operation/save'
@@ -26,6 +27,9 @@ require 'liveqa/messages/context'
 
 # Resources
 require 'liveqa/event'
+
+# Plugins
+require 'liveqa/plugins'
 
 ##
 # Implementation of the LiveQA

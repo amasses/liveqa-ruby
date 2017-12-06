@@ -9,10 +9,11 @@ module LiveQA
       class << self
 
         def to_h
-          {
+          Util.compact(
+            identifier_id: LiveQA::Store.get(:identifier_id),
             message_id: SecureRandom.uuid,
-            timestamp:  Time.now.utc.iso8601
-          }
+            timestamp: Time.now.utc.iso8601
+          )
         end
 
       end
