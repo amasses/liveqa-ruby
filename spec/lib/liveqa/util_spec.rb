@@ -6,6 +6,30 @@ describe LiveQA::Util do
     it { expect(LiveQA::Util.compact(test: nil, other: 'test')).to eq(other: 'test') }
   end
 
+  describe '#deep_compact' do
+    let(:payload) {{
+      my_key: 'test',
+      empty_key: nil,
+      another_key: {
+        last_key: 42,
+        valid_key: 'test',
+        empty_key: nil,
+        yet_another_key: {
+          empty_key: nil
+        }
+      }
+    }}
+
+    let(:expected) {{
+      my_key: 'test',
+      another_key: {
+        last_key: 42,
+        valid_key: 'test'
+      }
+    }}
+    it { expect(LiveQA::Util.deep_compact(payload)).to eq(expected) }
+  end
+
   describe '#encode_parameters' do
     it { expect(LiveQA::Util.encode_parameters(id: 42, other: 'test')).to eq("id=42&other=test") }
   end
@@ -35,7 +59,7 @@ describe LiveQA::Util do
     it { expect(LiveQA::Util.deep_underscore_key(payload)).to eq(expected) }
   end
 
-describe '#deep_stringify_key' do
+  describe '#deep_stringify_key' do
     let(:payload) {{
       my_key: 'test',
       another_key: {
@@ -53,6 +77,26 @@ describe '#deep_stringify_key' do
     }}
 
     it { expect(LiveQA::Util.deep_stringify_key(payload)).to eq(expected) }
+  end
+
+  describe '#deep_symbolize_key' do
+    let(:payload) {{
+      'my_key' => 'test',
+      'another_key' => {
+        'last_key' => 'test',
+        'valid_key' => 'test'
+      }
+    }}
+
+    let(:expected) {{
+      my_key: 'test',
+      another_key: {
+        last_key: 'test',
+        valid_key: 'test'
+      }
+    }}
+
+    it { expect(LiveQA::Util.deep_symbolize_key(payload)).to eq(expected) }
   end
 
   describe '#deep_obfuscate_value' do

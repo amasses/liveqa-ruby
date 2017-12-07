@@ -14,7 +14,9 @@ module LiveQA
 
         def call(env)
           request = ::Rack::Request.new(env)
-          LiveQA::Store.set(:identifier_id, extract_identifier_id(request))
+
+          store_identifier(request)
+          store_request_data(request)
 
           status, headers, body = @app.call(env)
 
@@ -31,9 +33,26 @@ module LiveQA
           'fl_identifier_id'.freeze
         end
 
-        def extract_identifier_id(request)
-          request.cookies[identifier_id_name] ||
-            SecureRandom.uuid
+        def store_identifier(request)
+          LiveQA::Store.set(
+            :identifier_id,
+            request.cookies[identifier_id_name] || SecureRandom.uuid
+          )
+        end
+
+        def store_request_data(request)
+          LiveQA::Store.bulk_set(
+            url:        request.url,
+            ssl:        request.ssl?,
+            host:       request.host,
+            port:       request.port,
+            path:       request.path,
+            referrer:   request.referrer,
+            method:     request.request_method,
+            xhr:        request.xhr?,
+            user_agent: request.user_agent,
+            ip:         request.ip
+          )
         end
 
         def write_cookie_identifier_id!(headers)

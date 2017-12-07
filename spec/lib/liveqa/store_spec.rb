@@ -21,6 +21,12 @@ describe LiveQA::Store do
     end
   end
 
+  describe '.load_from_hash' do
+    before { store.load_from_hash('test' => 'value', another: 'another_value') }
+
+    it { expect(store.store).to match(test: 'value', another: 'another_value') }
+  end
+
   describe '.set' do
     before { store.set(:test, 'value') }
 
@@ -43,6 +49,13 @@ describe LiveQA::Store do
     before { store[:test] = 'value' }
 
     it { expect(store[:test]).to eq('value') }
+  end
+
+  describe '.bulk_set' do
+    before { store[:test] = 'value' }
+    before { store.bulk_set(new_test: 'value', another: 'another_value') }
+
+    it { expect(store.store).to match(test: 'value', new_test: 'value', another: 'another_value') }
   end
 
   describe '.exist?' do

@@ -15,6 +15,11 @@ module LiveQA
         Thread.current[:request_store] = {}
       end
 
+      def load_from_hash(hash = {})
+        clear!
+        bulk_set(Util.deep_symbolize_key(hash))
+      end
+
       def get(key)
         store[key]
       end
@@ -24,6 +29,12 @@ module LiveQA
         store[key] = value
       end
       alias []= set
+
+      def bulk_set(attributes = {})
+        attributes.each do |(key, value)|
+          set(key, value)
+        end
+      end
 
       def exist?(key)
         store.key?(key)

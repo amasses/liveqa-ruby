@@ -14,6 +14,21 @@ module LiveQA
       end
 
       ##
+      # Remove nil value from hash recursively
+      #
+      # @return [Hash]
+      def deep_compact(object)
+        object.each_with_object({}) do |(key, value), result|
+          if value.is_a?(Hash)
+            value = deep_compact(value)
+            result[key] = value if !value.nil? && !value.empty?
+          else
+            result[key] = value if !value.nil?
+          end
+        end
+      end
+
+      ##
       # Encodes a hash of parameters in a way that's suitable for use as query
       # parameters in a URI or as form parameters in a request body. This mainly
       # involves escaping special characters from parameter keys and values (e.g.
@@ -63,7 +78,7 @@ module LiveQA
       end
 
       ##
-      # Deep convert hash to string case keys
+      # Deep convert hash to string keys
       #
       # @param [Hash] hash to transform
       #
@@ -72,6 +87,22 @@ module LiveQA
         deep_transform_keys_in_object(hash_object) do |key|
           begin
             key.to_s
+          rescue
+            key
+          end
+        end
+      end
+
+      ##
+      # Deep convert hash to symbol keys
+      #
+      # @param [Hash] hash to transform
+      #
+      # @return [Hash] transformed
+      def deep_symbolize_key(hash_object)
+        deep_transform_keys_in_object(hash_object) do |key|
+          begin
+            key.to_sym
           rescue
             key
           end

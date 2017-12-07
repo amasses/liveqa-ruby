@@ -17,7 +17,8 @@ describe LiveQA::Messages::Base do
       let(:expected_hash) {{
         identifier_id: 'hello',
         message_id: kind_of(String),
-        timestamp: kind_of(String)
+        timestamp: kind_of(String),
+        session_identifier_id: 'hello'
       }}
 
       it { expect(base.to_h).to match(expected_hash) }

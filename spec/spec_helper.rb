@@ -20,4 +20,8 @@ RSpec.configure do |config|
     end
   end
 
+  config.after(:each) do
+    LiveQA::Store.clear!
+  end
+
 end
