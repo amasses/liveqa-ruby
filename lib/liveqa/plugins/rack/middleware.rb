@@ -15,12 +15,12 @@ module LiveQA
         def call(env)
           request = ::Rack::Request.new(env)
 
-          store_identifier(request)
+          store_tracker(request)
           store_request_data(request)
 
           status, headers, body = @app.call(env)
 
-          write_cookie_identifier_id!(headers)
+          write_cookie_tracker_id!(headers)
 
           [status, headers, body]
         ensure
@@ -29,14 +29,14 @@ module LiveQA
 
         private
 
-        def identifier_id_name
-          'fl_identifier_id'.freeze
+        def tracker_id_name
+          'liveqa_tracker_id'.freeze
         end
 
-        def store_identifier(request)
+        def store_tracker(request)
           LiveQA::Store.set(
-            :identifier_id,
-            request.cookies[identifier_id_name] || SecureRandom.uuid
+            :tracker_id,
+            request.cookies[tracker_id_name] || SecureRandom.uuid
           )
         end
 
@@ -55,11 +55,11 @@ module LiveQA
           )
         end
 
-        def write_cookie_identifier_id!(headers)
+        def write_cookie_tracker_id!(headers)
           ::Rack::Utils.set_cookie_header!(
             headers || {},
-            identifier_id_name,
-            value: LiveQA::Store.get(:identifier_id),
+            tracker_id_name,
+            value: LiveQA::Store.get(:tracker_id),
             path: '/'
           )
         end

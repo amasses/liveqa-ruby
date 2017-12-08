@@ -23,7 +23,7 @@ module LiveQA
             value = deep_compact(value)
             result[key] = value if !value.nil? && !value.empty?
           else
-            result[key] = value if !value.nil?
+            result[key] = value unless value.nil?
           end
         end
       end

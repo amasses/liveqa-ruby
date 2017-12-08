@@ -9,7 +9,7 @@ module LiveQA
       class ServerMiddleware
 
         def call(_worker, job, _queue)
-          LiveQA::Store.load_from_hash(job['liveqa_store']) || {}
+          LiveQA::Store.load_from_hash(job['liveqa_store'])
           yield
         ensure
           LiveQA::Store.clear!

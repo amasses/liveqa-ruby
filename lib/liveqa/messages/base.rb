@@ -10,10 +10,10 @@ module LiveQA
 
         def to_h
           Util.compact(
-            identifier_id: LiveQA::Store.get(:identifier_id),
+            tracker_id: LiveQA::Store.get(:tracker_id),
             message_id: SecureRandom.uuid,
             timestamp: Time.now.utc.iso8601,
-            session_identifier_id: LiveQA::Store.get(:identifier_id)
+            session_tracker_id: LiveQA::Store.get(:tracker_id)
           )
         end
 

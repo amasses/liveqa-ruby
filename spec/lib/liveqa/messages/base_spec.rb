@@ -12,13 +12,13 @@ describe LiveQA::Messages::Base do
     it { expect(base.to_h).to match(expected_hash) }
 
     context 'with store' do
-      before { LiveQA::Store.set(:identifier_id, 'hello') }
+      before { LiveQA::Store.set(:tracker_id, 'hello') }
 
       let(:expected_hash) {{
-        identifier_id: 'hello',
+        tracker_id: 'hello',
         message_id: kind_of(String),
         timestamp: kind_of(String),
-        session_identifier_id: 'hello'
+        session_tracker_id: 'hello'
       }}
 
       it { expect(base.to_h).to match(expected_hash) }

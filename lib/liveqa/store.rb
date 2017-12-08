@@ -15,9 +15,9 @@ module LiveQA
         Thread.current[:request_store] = {}
       end
 
-      def load_from_hash(hash = {})
+      def load_from_hash(object = {})
         clear!
-        bulk_set(Util.deep_symbolize_key(hash))
+        bulk_set(Util.deep_symbolize_key(object)) if object.is_a?(Hash)
       end
 
       def get(key)

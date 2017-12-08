@@ -22,9 +22,13 @@ describe LiveQA::Store do
   end
 
   describe '.load_from_hash' do
-    before { store.load_from_hash('test' => 'value', another: 'another_value') }
+    context 'with hash' do
+      before { store.load_from_hash('test' => 'value', another: 'another_value') }
 
-    it { expect(store.store).to match(test: 'value', another: 'another_value') }
+      it { expect(store.store).to match(test: 'value', another: 'another_value') }
+    end
+
+    it { expect { store.load_from_hash(nil) }.to_not raise_error }
   end
 
   describe '.set' do

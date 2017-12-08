@@ -43,10 +43,10 @@ describe LiveQA::Event do
 
   describe '.identify' do
     let(:response) { double('LiveQA::Event', successful?: true) }
-    after { LiveQA.identify(42, { identifier_id: 'xx', properties: { name: 'John Doe' }}, { no_ssl: true }) }
+    after { LiveQA.identify(42, { tracker_id: 'xx', properties: { name: 'John Doe' }}, { no_ssl: true }) }
 
     let(:expected_arg) {{
-      identifier_id: 'xx',
+      tracker_id: 'xx',
       properties: {
         name: 'John Doe'
       },
