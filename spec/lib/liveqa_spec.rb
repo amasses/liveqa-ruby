@@ -16,6 +16,8 @@ describe LiveQA::Event do
       name:    'test',
       message_id: kind_of(String),
       timestamp: kind_of(String),
+      tracker_id: kind_of(String),
+      session_tracker_id: kind_of(String),
       properties: {
         total: 10
       },
@@ -54,6 +56,8 @@ describe LiveQA::Event do
       user_id: 42,
       message_id: kind_of(String),
       timestamp: kind_of(String),
+      tracker_id: kind_of(String),
+      session_tracker_id: kind_of(String),
       context: {
         library: {
           name: "liveqa",

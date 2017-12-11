@@ -5,8 +5,10 @@ describe LiveQA::Messages::Base do
 
   describe '#to_h' do
     let(:expected_hash) {{
+      tracker_id: kind_of(String),
       message_id: kind_of(String),
-      timestamp: kind_of(String)
+      timestamp: kind_of(String),
+      session_tracker_id: kind_of(String)
     }}
 
     it { expect(base.to_h).to match(expected_hash) }
