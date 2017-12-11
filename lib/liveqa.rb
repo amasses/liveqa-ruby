@@ -96,7 +96,7 @@ module LiveQA
       payload = Event.build_payload(payload)
 
       if configurations.async_handler
-        return configurations.async_handler.enqueue('Event', 'create', payload, request_options)
+        return configurations.async_handler.enqueue('LiveQA::Event', 'create', payload, request_options)
       end
 
       event = Event.create(payload, request_options)
