@@ -17,13 +17,10 @@ require 'liveqa/liveqa_object'
 require 'liveqa/request'
 require 'liveqa/api_resource'
 require 'liveqa/store'
+require 'liveqa/message'
 
 # Operations
 require 'liveqa/api_operation/save'
-
-# Messages
-require 'liveqa/messages/base'
-require 'liveqa/messages/context'
 
 # Resources
 require 'liveqa/event'

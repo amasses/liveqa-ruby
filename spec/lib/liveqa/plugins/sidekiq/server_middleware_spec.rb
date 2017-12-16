@@ -43,7 +43,7 @@ describe LiveQA::Plugins::Sidekiq::ServerMiddleware do
         ip: '127.0.0.1',
         worker:  {
           name: 'sidekiq',
-          version: '5.0.2',
+          version: kind_of(String),
           queue: 'default',
           class: 'MyWorker',
           id: '24cc849f71325b62ef470901',

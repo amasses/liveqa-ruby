@@ -12,9 +12,8 @@ module LiveQA
     class << self
 
       def build_payload(payload)
-        Messages::Base
+        Message
           .to_h
-          .merge(context: Messages::Context.to_h)
           .merge(payload)
       end
 

@@ -6,16 +6,14 @@ describe LiveQA::Event do
     before { LiveQA::Store.set(:tracker_id, '41') }
 
     let(:expected) {{
-      context: {
-        library: {
-          name: "liveqa",
-          language: "ruby",
-          version: kind_of(String)
-        },
-        server: {
-          host: kind_of(String),
-          pid: kind_of(Numeric)
-        }
+      library: {
+        name: "liveqa",
+        language: "ruby",
+        version: kind_of(String)
+      },
+      server: {
+        host: kind_of(String),
+        pid: kind_of(Numeric)
       },
       message_id: kind_of(String),
       timestamp: kind_of(String),

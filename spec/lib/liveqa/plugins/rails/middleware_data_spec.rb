@@ -19,7 +19,7 @@ describe LiveQA::Plugins::Rails::MiddlewareData do
       before { middleware.store_data(request) }
 
       let(:expected) {{
-        environement: 'development',
+        environement: kind_of(String),
         request: {
           id: '42a'
         },
@@ -42,7 +42,7 @@ describe LiveQA::Plugins::Rails::MiddlewareData do
       before { middleware.store_data(request) }
 
       let(:expected) {{
-        environement: 'development',
+        environement: kind_of(String),
         request: {
           id: '42a',
           xhr: false

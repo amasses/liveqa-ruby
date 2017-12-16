@@ -21,16 +21,14 @@ describe LiveQA::Event do
       properties: {
         total: 10
       },
-      context: {
-        library: {
-          name: "liveqa",
-          language: "ruby",
-          version: kind_of(String)
-        },
-        server: {
-          host: kind_of(String),
-          pid: kind_of(Numeric)
-        }
+      library: {
+        name: "liveqa",
+        language: "ruby",
+        version: kind_of(String)
+      },
+      server: {
+        host: kind_of(String),
+        pid: kind_of(Numeric)
       }
     }}
 
@@ -57,16 +55,14 @@ describe LiveQA::Event do
       message_id: kind_of(String),
       timestamp: kind_of(String),
       session_tracker_id: kind_of(String),
-      context: {
-        library: {
-          name: "liveqa",
-          language: "ruby",
-          version: kind_of(String)
-        },
-        server: {
-          host: kind_of(String),
-          pid: kind_of(Numeric)
-        }
+      library: {
+        name: "liveqa",
+        language: "ruby",
+        version: kind_of(String)
+      },
+      server: {
+        host: kind_of(String),
+        pid: kind_of(Numeric)
       }
     }}
 
