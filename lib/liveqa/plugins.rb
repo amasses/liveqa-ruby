@@ -4,7 +4,10 @@
 if defined?(Rack)
   require 'liveqa/plugins/rack/middleware'
 
-  require 'liveqa/plugins/rails/railtie' if defined?(Rails)
+  if defined?(Rails)
+    require 'liveqa/plugins/rails/railtie'
+    require 'liveqa/plugins/rails/middleware_data'
+  end
 end
 
 ##

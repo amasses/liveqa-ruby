@@ -14,9 +14,12 @@ module LiveQA
           Util.deep_compact(
             library: library,
             server: server,
-            request: request,
+            request: LiveQA::Store.get(:request),
+            worker: LiveQA::Store.get(:worker),
+            frameworks: LiveQA::Store.get(:frameworks),
             user_agent: LiveQA::Store.get(:user_agent),
-            ip: LiveQA::Store.get(:ip)
+            ip: LiveQA::Store.get(:ip),
+            environement: LiveQA::Store.get(:environement)
           )
         end
 
@@ -30,23 +33,11 @@ module LiveQA
           }
         end
 
-        def request
-          {
-            url: LiveQA::Store.get(:url),
-            ssl: LiveQA::Store.get(:ssl),
-            host: LiveQA::Store.get(:host),
-            port: LiveQA::Store.get(:port),
-            path: LiveQA::Store.get(:path),
-            referrer: LiveQA::Store.get(:referrer),
-            method: LiveQA::Store.get(:request_method),
-            xhr: LiveQA::Store.get(:xhr)
-          }
-        end
-
         def server
           {
             host: Socket.gethostname,
-            pid: Process.pid
+            pid: Process.pid,
+            software: LiveQA::Store.get(:server_software)
           }
         end
 

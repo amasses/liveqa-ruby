@@ -4,10 +4,7 @@ module LiveQA
       class Railtie < ::Rails::Railtie
 
         initializer 'liveqa.middleware' do |app|
-          app.config.middleware.insert_after(
-            ActionDispatch::Session::CookieStore,
-            LiveQA::Plugins::Rack::Middleware
-          )
+          app.config.middleware.use(LiveQA::Plugins::Rack::Middleware)
 
           if ActiveSupport.const_defined?(:Reloader) && ActiveSupport::Reloader.respond_to?(:to_complete)
             ActiveSupport::Reloader.to_complete do

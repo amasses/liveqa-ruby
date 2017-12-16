@@ -17,6 +17,9 @@ module LiveQA
 
           store_tracker(request)
           store_request_data(request)
+          store_framework
+
+          LiveQA::Plugins::Rails::MiddlewareData.store_data(request) if defined?(::Rails)
 
           status, headers, body = @app.call(env)
 
@@ -41,17 +44,34 @@ module LiveQA
         end
 
         def store_request_data(request)
+          LiveQA::Store.set(
+            :request,
+            url: request.url,
+            ssl: request.ssl?,
+            host: request.host,
+            port: request.port,
+            path: request.path,
+            referrer: request.referrer,
+            method: request.request_method,
+            xhr: request.xhr?
+          )
+
           LiveQA::Store.bulk_set(
-            url:        request.url,
-            ssl:        request.ssl?,
-            host:       request.host,
-            port:       request.port,
-            path:       request.path,
-            referrer:   request.referrer,
-            method:     request.request_method,
-            xhr:        request.xhr?,
             user_agent: request.user_agent,
-            ip:         request.ip
+            ip: request.ip,
+            server_software: request.env['SERVER_SOFTWARE']
+          )
+        end
+
+        def store_framework
+          frameworks = LiveQA::Store.get(:frameworks) || []
+
+          LiveQA::Store.set(
+            :frameworks,
+            frameworks.push(
+              name: 'rack',
+              version: ::Rack.version
+            )
           )
         end
 

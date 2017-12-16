@@ -7,5 +7,6 @@ else
 end
 
 gem 'rack'
+gem 'rails'
 
 gemspec
