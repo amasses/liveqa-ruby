@@ -53,12 +53,12 @@ module LiveQA
             path: request.path,
             referrer: request.referrer,
             method: request.request_method,
-            xhr: request.xhr?
+            xhr: request.xhr?,
+            user_agent: request.user_agent,
+            ip: request.ip
           )
 
           LiveQA::Store.bulk_set(
-            user_agent: request.user_agent,
-            ip: request.ip,
             server_software: request.env['SERVER_SOFTWARE']
           )
         end

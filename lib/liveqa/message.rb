@@ -17,8 +17,6 @@ module LiveQA
           request: LiveQA::Store.get(:request),
           worker: LiveQA::Store.get(:worker),
           frameworks: LiveQA::Store.get(:frameworks),
-          user_agent: LiveQA::Store.get(:user_agent),
-          ip: LiveQA::Store.get(:ip),
           environement: LiveQA::Store.get(:environement)
         )
       end
