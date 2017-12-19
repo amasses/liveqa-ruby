@@ -16,7 +16,7 @@ module LiveQA
           server: server,
           request: LiveQA::Store.get(:request),
           worker: LiveQA::Store.get(:worker),
-          frameworks: LiveQA::Store.get(:frameworks),
+          stack: LiveQA::Store.get(:stack),
           environement: LiveQA::Store.get(:environement)
         )
       end

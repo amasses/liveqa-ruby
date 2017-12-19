@@ -70,11 +70,11 @@ module LiveQA
         end
 
         def store_framework
-          frameworks = LiveQA::Store.get(:frameworks) || []
+          stack = LiveQA::Store.get(:stack) || []
 
           LiveQA::Store.set(
-            :frameworks,
-            frameworks.push(
+            :stack,
+            stack.push(
               name: 'rack',
               version: ::Rack.version
             )

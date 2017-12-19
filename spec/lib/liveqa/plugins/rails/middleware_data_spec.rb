@@ -23,7 +23,7 @@ describe LiveQA::Plugins::Rails::MiddlewareData do
         request: {
           id: '42a'
         },
-        frameworks: [
+        stack: [
           {
             name: 'rails',
             version: kind_of(String)
@@ -37,7 +37,7 @@ describe LiveQA::Plugins::Rails::MiddlewareData do
     context 'update the store' do
       before do
         LiveQA::Store.set(:request, { xhr: false })
-        LiveQA::Store.set(:frameworks, [{ name: 'rack' }])
+        LiveQA::Store.set(:stack, [{ name: 'rack' }])
       end
       before { middleware.store_data(request) }
 
@@ -47,7 +47,7 @@ describe LiveQA::Plugins::Rails::MiddlewareData do
           id: '42a',
           xhr: false
         },
-        frameworks: [
+        stack: [
           {
             name: 'rack'
           },
