@@ -17,11 +17,11 @@ describe LiveQA::Config do
     end
 
     context 'format obfuscated_fields' do
-      let(:params) {{ api_key: SecureRandom.hex, obfuscated_fields: %i[password password_confirmation] }}
+      let(:params) {{ api_key: SecureRandom.hex, obfuscated_fields: %i[another_password password_confirmation] }}
 
       before { config.valid! }
 
-      it { expect(config.obfuscated_fields).to match_array(%w[password password_confirmation]) }
+      it { expect(config.obfuscated_fields).to match_array(%w[another_password password_confirmation password access_token api_key ccv credit_card_number cvv secret secret_token token]) }
     end
 
     context 'async_handler' do

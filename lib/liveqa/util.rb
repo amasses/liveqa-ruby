@@ -115,11 +115,11 @@ module LiveQA
       # @param [Hash] hash to obfuscate
       #
       # @return [Hash] hash obfuscated
-      def deep_obfuscate_value(object, fields)
+      def deep_obfuscate_value(object, fields, obfuscate_name = OBFUSCATED)
         case object
         when Hash
           object.each_with_object({}) do |(key, value), result|
-            result[key] = fields.include?(key.to_s) ? OBFUSCATED : deep_obfuscate_value(value, fields)
+            result[key] = fields.include?(key.to_s) ? obfuscate_name : deep_obfuscate_value(value, fields)
           end
         when Array
           object.map { |e| deep_obfuscate_value(e, fields) }

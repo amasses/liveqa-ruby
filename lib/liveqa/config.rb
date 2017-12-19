@@ -12,6 +12,19 @@ module LiveQA
       }
     }.freeze
 
+    DEFAULT_OBFUSCATED_FIELDS = %w[
+      password
+      password_confirmation
+      secret
+      secret_token
+      token
+      api_key
+      access_token
+      credit_card_number
+      cvv
+      ccv
+    ].freeze
+
     ##
     # @return [String] API key
     attr_accessor :api_key
@@ -86,7 +99,7 @@ module LiveQA
     # * Change to the class for async handler
     #
     def format!
-      self.obfuscated_fields = obfuscated_fields.map(&:to_s)
+      self.obfuscated_fields = (obfuscated_fields.map(&:to_s) + DEFAULT_OBFUSCATED_FIELDS).uniq
 
       return unless ASYNC_HANDLERS[async_handler]
 

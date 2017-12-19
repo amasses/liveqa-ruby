@@ -1,3 +1,5 @@
+require 'uri'
+
 module LiveQA
   module Plugins
     module Rack
@@ -46,16 +48,20 @@ module LiveQA
         def store_request_data(request)
           LiveQA::Store.set(
             :request,
-            url: request.url,
+            url: obfuscate_uri(request.url),
             ssl: request.ssl?,
             host: request.host,
             port: request.port,
             path: request.path,
-            referrer: request.referrer,
+            referrer: obfuscate_uri(request.referrer),
             method: request.request_method,
             xhr: request.xhr?,
             user_agent: request.user_agent,
-            ip: request.ip
+            ip: request.ip,
+            params: Util.deep_obfuscate_value(
+              ::Rack::Utils.parse_query(request.query_string),
+              LiveQA.configurations.obfuscated_fields
+            )
           )
 
           LiveQA::Store.bulk_set(
@@ -82,6 +88,23 @@ module LiveQA
             value: LiveQA::Store.get(:tracker_id),
             path: '/'
           )
+        end
+
+        def obfuscate_uri(url)
+          uri = URI.parse(url)
+
+          params =
+            Util.deep_obfuscate_value(
+              ::Rack::Utils.parse_query(uri.query),
+              LiveQA.configurations.obfuscated_fields,
+              'HIDDEN'
+            )
+
+          uri.merge(
+            "?#{::Rack::Utils.build_query(params)}"
+          ).to_s
+        rescue
+          ''
         end
 
       end
