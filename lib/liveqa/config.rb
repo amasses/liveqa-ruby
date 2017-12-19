@@ -17,6 +17,7 @@ module LiveQA
       password_confirmation
       secret
       secret_token
+      authenticity_token
       token
       api_key
       access_token

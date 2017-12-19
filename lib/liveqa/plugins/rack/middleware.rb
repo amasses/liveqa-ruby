@@ -19,7 +19,7 @@ module LiveQA
 
           store_tracker(request)
           store_request_data(request)
-          store_framework
+          store_stack
 
           LiveQA::Plugins::Rails::MiddlewareData.store_data(request) if defined?(::Rails)
 
@@ -58,8 +58,12 @@ module LiveQA
             xhr: request.xhr?,
             user_agent: request.user_agent,
             ip: request.ip,
-            params: Util.deep_obfuscate_value(
-              ::Rack::Utils.parse_query(request.query_string),
+            get_params: Util.deep_obfuscate_value(
+              request.GET,
+              LiveQA.configurations.obfuscated_fields
+            ),
+            post_params: Util.deep_obfuscate_value(
+              request.POST,
               LiveQA.configurations.obfuscated_fields
             )
           )
@@ -69,7 +73,7 @@ module LiveQA
           )
         end
 
-        def store_framework
+        def store_stack
           stack = LiveQA::Store.get(:stack) || []
 
           LiveQA::Store.set(
