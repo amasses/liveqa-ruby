@@ -100,6 +100,8 @@ module LiveQA
               'HIDDEN'
             )
 
+          return url if params.blank?
+
           uri.merge(
             "?#{::Rack::Utils.build_query(params)}"
           ).to_s
