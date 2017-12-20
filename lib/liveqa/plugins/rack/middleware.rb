@@ -45,7 +45,6 @@ module LiveQA
           )
         end
 
-        # rubocop:disable Metrics/MethodLength
         def store_request_data(request)
           LiveQA::Store.set(
             :request,
@@ -59,21 +58,14 @@ module LiveQA
             xhr: request.xhr?,
             user_agent: request.user_agent,
             ip: request.ip,
-            get_params: Util.deep_obfuscate_value(
-              request.GET,
-              LiveQA.configurations.obfuscated_fields
-            ),
-            post_params: Util.deep_obfuscate_value(
-              request.POST,
-              LiveQA.configurations.obfuscated_fields
-            )
+            get_params: obfuscation_get_params(request, 'GET'),
+            post_params: obfuscation_get_params(request, 'POST')
           )
 
           LiveQA::Store.bulk_set(
             server_software: request.env['SERVER_SOFTWARE']
           )
         end
-        # rubocop:enable Metrics/MethodLength
 
         def store_stack
           stack = LiveQA::Store.get(:stack) || []
@@ -113,6 +105,15 @@ module LiveQA
           ).to_s
         rescue
           ''
+        end
+
+        def obfuscation_get_params(request, type)
+          Util.deep_obfuscate_value(
+            request.send(type),
+            LiveQA.configurations.obfuscated_fields
+          )
+        rescue
+          {}
         end
 
       end

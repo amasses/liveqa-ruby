@@ -21,7 +21,7 @@ describe LiveQA::Config do
 
       before { config.valid! }
 
-      it { expect(config.obfuscated_fields).to match_array(%w[another_password password_confirmation password access_token api_key ccv credit_card_number cvv secret secret_token token]) }
+      it { expect(config.obfuscated_fields).to match_array(%w[another_password password_confirmation password access_token api_key authenticity_token ccv credit_card_number cvv secret secret_token token]) }
     end
 
     context 'async_handler' do
