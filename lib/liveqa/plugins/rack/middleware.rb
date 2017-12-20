@@ -45,6 +45,7 @@ module LiveQA
           )
         end
 
+        # rubocop:disable Metrics/MethodLength
         def store_request_data(request)
           LiveQA::Store.set(
             :request,
@@ -72,6 +73,7 @@ module LiveQA
             server_software: request.env['SERVER_SOFTWARE']
           )
         end
+        # rubocop:enable Metrics/MethodLength
 
         def store_stack
           stack = LiveQA::Store.get(:stack) || []
