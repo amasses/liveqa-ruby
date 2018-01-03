@@ -5,11 +5,11 @@ module LiveQA
 
         class << self
 
-          def store_data(request)
+          def store_data(request = nil)
             LiveQA::Store.bulk_set(
               environement: ::Rails.env
             )
-            store_request_data(request)
+            store_request_data(request) if request
             store_framework
           end
 
