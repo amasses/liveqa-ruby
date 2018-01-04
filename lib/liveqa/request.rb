@@ -60,6 +60,7 @@ module LiveQA
     def put
       @request = Net::HTTP::Put.new(uri.path)
 
+      set_header
       request.body = params[:payload]
 
       handle_request
@@ -76,6 +77,7 @@ module LiveQA
     def delete
       @request = Net::HTTP::Delete.new(uri.path)
 
+      set_header
       request.body = params[:payload]
 
       handle_request

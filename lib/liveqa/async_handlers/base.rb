@@ -7,9 +7,7 @@ module LiveQA
       end
 
       def execute(args)
-        klass_name, method, payload, request_options = args
-
-        Object.const_get(klass_name).send(method.to_sym, payload, request_options)
+        Object.const_get(args[0]).send(args[1].to_sym, *args[2..-1])
       end
 
     end

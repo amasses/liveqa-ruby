@@ -73,7 +73,7 @@ module LiveQA
           use_ssl: configurations.http_secure
         ).merge(headers).merge(options)
 
-        Request.execute(request_options)
+        Request.execute(request_options).body
       rescue LiveQA::RequestError => error
         return error.http_body if error.http_status == 422
         raise

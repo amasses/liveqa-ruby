@@ -2,6 +2,15 @@ require 'spec_helper'
 
 describe LiveQA::Util do
 
+  describe '#camelize' do
+    it { expect(LiveQA::Util.except_keys({ a: 1, b: 2 }, :b)).to eq({ a: 1 }) }
+  end
+
+  describe '#camelize' do
+    it { expect(LiveQA::Util.camelize('model')).to eq("Model") }
+    it { expect(LiveQA::Util.camelize('my_model')).to eq("MyModel") }
+  end
+
   describe '#compact' do
     it { expect(LiveQA::Util.compact(test: nil, other: 'test')).to eq(other: 'test') }
   end

@@ -6,6 +6,28 @@ module LiveQA
       OBFUSCATED  = '[HIDDEN]'.freeze
 
       ##
+      # Remove keys from a Hash
+      #
+      # @param [Hash] to be excepted
+      # @param [List[String]] to be excepted
+      #
+      # @return [Hash]
+      def except_keys(hash, *keys)
+        hash.dup.delete_if { |(key, _value)| keys.include?(key) }
+      end
+
+      ##
+      # Convert string to camelize
+      #
+      # @param [String]
+      #
+      # @example
+      #   camelize('my_model') => 'MyModel'
+      def camelize(string)
+        string.split('_').map(&:capitalize).join
+      end
+
+      ##
       # Remove nil value from hash
       #
       # @return [Hash]

@@ -12,10 +12,10 @@ module LiveQA
     # @return [Hash] JSON parsed response
     attr_reader :data
 
-    attr_reader :accepted
-    alias accepted? accepted
-
     attr_reader :errors
+
+    attr_reader :successful
+    alias successful? successful
 
     class << self
 
@@ -23,14 +23,36 @@ module LiveQA
       # Initialize from the API response
       #
       # @return [LiveQA::LiveQAObject]
-      def initialize_from(_response = '')
-        object = new
+      def initialize_from(response, object = new)
+        object.load_response_api(response.is_a?(Hash) ? response : JSON.parse(response))
+        object.update_attributes(LiveQA::Util.except_keys(object.raw, :data))
 
-        object.successful = true
+        if object.raw[:object] == 'list'
+          object.raw[:data].each do |response_object|
+            data = object.type_from_string_object(response_object[:object]).initialize_from(response_object)
+
+            object.add_data(data)
+          end
+        end
 
         object
       end
 
+    end
+
+    ##
+    # Update the object based on the response from the API
+    # Remove and new accessor
+    #
+    # @param [Hash] response
+    #
+    # @return [LiveQA::LiveQAObject]
+    def update_from(response)
+      self.class.initialize_from(response, self)
+
+      (@values.keys - raw.keys).each { |key| remove_accessor(key) }
+
+      self
     end
 
     ##
@@ -70,7 +92,7 @@ module LiveQA
 
     ##
     # @return [JSON] values to JSON
-    def to_json
+    def to_json(_object = nil)
       JSON.generate(@values)
     end
 
@@ -85,6 +107,15 @@ module LiveQA
     end
 
     ##
+    # Load the root components for the API response
+    #
+    # @param [Hash] values
+    def load_response_api(response)
+      @raw        = LiveQA::Util.deep_underscore_key(response)
+      @successful = true
+    end
+
+    ##
     # Add data for sub-object
     #
     # @param [Object] data
@@ -92,7 +123,17 @@ module LiveQA
       @data << data
     end
 
-    protected
+    ##
+    # Create an object from a string
+    #
+    # @param [String] object to be build
+    #
+    # @return [Object]
+    def type_from_string_object(string_object)
+      klass_name = LiveQA::Util.camelize(string_object.to_s)
+
+      Object.const_get("LiveQA::#{klass_name}")
+    end
 
     def inspect
       id_string = respond_to?(:id) && !id.nil? ? " id=#{id}" : ''

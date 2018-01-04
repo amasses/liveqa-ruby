@@ -24,6 +24,7 @@ require 'liveqa/api_operation/save'
 
 # Resources
 require 'liveqa/event'
+require 'liveqa/group'
 
 # Plugins
 require 'liveqa/plugins'
@@ -99,6 +100,29 @@ module LiveQA
       event = Event.create(payload, request_options)
 
       event.successful?
+    end
+
+    ##
+    # Send a create/update for a group
+    #
+    # @param [String] group id from your database
+    # @param [Hash] payload to be send
+    # @param [Hash] options for the request
+    #
+    # @return [LiveQA::Object] response from the server
+    def set_group(group_id, payload = {}, request_options = {})
+      return true unless configurations.enabled
+
+      payload[:message_id] = SecureRandom.uuid
+      payload[:timestamp] = Time.now.utc.iso8601
+
+      if configurations.async_handler
+        return configurations.async_handler.enqueue('LiveQA::Group', 'update', group_id, payload, request_options)
+      end
+
+      group = Group.update(group_id, payload, request_options)
+
+      group.successful?
     end
 
   end

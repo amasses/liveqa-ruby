@@ -10,10 +10,20 @@ describe LiveQA::AsyncHandlers::Base do
   end
 
   describe 'execute' do
-    let(:params) { ['LiveQA::Event', 'create', { test: true }] }
+    context 'default params' do
+      let(:params) { ['LiveQA::Event', 'create', { test: true }] }
 
-    after { base.execute(params) }
+      after { base.execute(params) }
 
-    it { expect(LiveQA::Event).to receive(:create).with({ test: true }, nil) }
+      it { expect(LiveQA::Event).to receive(:create).with({ test: true }) }
+    end
+
+    context 'more params params' do
+      let(:params) { ['LiveQA::Group', 'update', 42, { test: true }, { no_ssl: true }] }
+
+      after { base.execute(params) }
+
+      it { expect(LiveQA::Group).to receive(:update).with(42, { test: true }, { no_ssl: true }) }
+    end
   end
 end
