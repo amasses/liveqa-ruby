@@ -26,7 +26,6 @@ module LiveQA
       def initialize_from(response, object = new)
         object.load_response_api(response.is_a?(Hash) ? response : JSON.parse(response))
         object.update_attributes(LiveQA::Util.except_keys(object.raw, :data))
-
         if object.raw[:object] == 'list'
           object.raw[:data].each do |response_object|
             data = object.type_from_string_object(response_object[:object]).initialize_from(response_object)

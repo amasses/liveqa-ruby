@@ -25,6 +25,7 @@ require 'liveqa/api_operation/save'
 # Resources
 require 'liveqa/event'
 require 'liveqa/group'
+require 'liveqa/identity'
 
 # Plugins
 require 'liveqa/plugins'
@@ -123,6 +124,29 @@ module LiveQA
       group = Group.update(group_id, payload, request_options)
 
       group.successful?
+    end
+
+    ##
+    # Send a create/update for an identity
+    #
+    # @param [String] user id from your database
+    # @param [Hash] payload to be send
+    # @param [Hash] options for the request
+    #
+    # @return [LiveQA::Object] response from the server
+    def set_identity(user_id, payload = {}, request_options = {})
+      return true unless configurations.enabled
+
+      payload[:message_id] = SecureRandom.uuid
+      payload[:timestamp] = Time.now.utc.iso8601
+
+      if configurations.async_handler
+        return configurations.async_handler.enqueue('LiveQA::Identity', 'update', user_id, payload, request_options)
+      end
+
+      identity = Identity.update(user_id, payload, request_options)
+
+      identity.successful?
     end
 
   end

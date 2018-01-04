@@ -96,4 +96,25 @@ describe LiveQA::Event do
     end
   end
 
+  describe '.set_identity' do
+    let(:response) { double('LiveQA::Identity', successful?: true) }
+    after { LiveQA.set_identity(42, { properties: { name: 'John Doe' }}, { no_ssl: true }) }
+
+    let(:expected_arg) {{
+      properties: {
+        name: 'John Doe'
+      },
+      message_id: kind_of(String),
+      timestamp: kind_of(String),
+    }}
+
+    it { expect(LiveQA::Identity).to receive(:update).with(42, expected_arg, { no_ssl: true }).and_return(response) }
+
+    context 'not enabled' do
+      before { LiveQA.configurations.enabled = false }
+
+      it { expect(LiveQA::Identity).to_not receive(:update) }
+    end
+  end
+
 end
