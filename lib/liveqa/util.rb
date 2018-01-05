@@ -3,7 +3,8 @@ module LiveQA
     class << self
 
       DATE_FORMAT = '%Y/%m/%d'.freeze
-      OBFUSCATED  = '[HIDDEN]'.freeze
+      OBFUSCATED = '[HIDDEN]'.freeze
+      DEFAULT_OBJECT_DEF = %w[id name].freeze
 
       ##
       # Remove keys from a Hash
@@ -150,6 +151,29 @@ module LiveQA
         end
       end
 
+      ##
+      # Convert object into Hash
+      #
+      # @params [Objects]
+      #
+      # @return [Hash]
+      def properties(*args)
+        params = extract_params!(args)
+
+        attributes = params.each_with_object({}) do |(key, value), hash|
+          hash[key] = extract_object(value)
+        end
+
+        attributes.merge(
+          args.each_with_object({}) do |object, hash|
+            key = object.class.name.downcase
+            next if key.nil?
+
+            hash[key] = extract_object(object)
+          end
+        )
+      end
+
       private
 
       def deep_transform_keys_in_object(object, &block)
@@ -162,6 +186,31 @@ module LiveQA
           object.map { |e| deep_transform_keys_in_object(e, &block) }
         else
           object
+        end
+      end
+
+      def extract_object(object, custom_object_properties = LiveQA.configurations.custom_object_properties)
+        return unless object
+
+        object_name = object.class.name.downcase
+
+        columns =
+          custom_object_properties[object_name.to_sym] ||
+          custom_object_properties[object_name.to_s] ||
+          DEFAULT_OBJECT_DEF
+
+        params = columns.each_with_object({}) do |column, attributes|
+          attributes[column.to_s] = object.send(column) if object.respond_to?(column)
+        end
+
+        params.empty? ? object : params
+      end
+
+      def extract_params!(args)
+        if args.last.is_a?(Hash) && args.last.instance_of?(Hash)
+          args.pop
+        else
+          {}
         end
       end
 

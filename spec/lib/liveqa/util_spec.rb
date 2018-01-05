@@ -129,4 +129,35 @@ describe LiveQA::Util do
     it { expect(LiveQA::Util.deep_obfuscate_value(payload, fields)).to eq(expected) }
   end
 
+  describe '.properties' do
+    before { LiveQA.configurations.custom_object_properties = { user: %w[id email name] }}
+
+    let(:group) { double('Group', id: 10, name: "John Doe", state: 'active', class: double('Class', name: 'Group')) }
+    let(:user) { double('User', id: 42, name: "John Doe", email: "admin@email.com", state: 'active', class: double('Class', name: 'User')) }
+    let(:error_message) {{ email: ["can't be blank", "Looks like you've entered an invalid email address"] }}
+
+    let(:expected) {{
+      'group' => {
+        'id' => group.id,
+        'name' => group.name
+      },
+      'user' => {
+        'id' => user.id,
+        'email' => user.email,
+        'name' => user.name
+      },
+      invited_by: {
+        'id' => user.id,
+        'email' => user.email,
+        'name' => user.name
+      },
+      errors: error_message,
+      other: 81.to_f,
+      another: 42,
+      'float' => 81.to_f
+    }}
+
+    it { expect(LiveQA::Util.properties(group, user, 81.to_f, invited_by: user, errors: error_message, other: 81.to_f, another: 42)).to match(expected) }
+  end
+
 end

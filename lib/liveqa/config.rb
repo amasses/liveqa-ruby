@@ -63,19 +63,29 @@ module LiveQA
     attr_accessor :async_options
 
     ##
+    # @return [Hash] custom object properties
+    attr_accessor :custom_object_properties
+
+    ##
     # @param [Hash{Symbol=>Object}]
     # Initialize and validate the configuration
+    # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/PerceivedComplexity
     def initialize(options = {})
-      self.api_key           = options[:api_key]
-      self.api_host          = options[:api_host] || 'api.liveqa.io'
-      self.api_version       = options[:api_version] || 'v1'
-      self.proxy_url         = options[:proxy_url]
-      self.http_secure       = options[:http_secure] || true
-      self.enabled           = options[:enabled] || true
+      self.api_key = options[:api_key]
+      self.api_host = options[:api_host] || 'api.liveqa.io'
+      self.api_version = options[:api_version] || 'v1'
+      self.proxy_url = options[:proxy_url]
+      self.http_secure = options[:http_secure] || true
+      self.enabled = options[:enabled] || true
       self.obfuscated_fields = options[:obfuscated_fields] || []
-      self.async_handler     = options[:async_handler]
-      self.async_options     = options[:async_options] || {}
+      self.async_handler = options[:async_handler]
+      self.async_options = options[:async_options] || {}
+      self.async_options = options[:async_options] || {}
+      self.custom_object_properties = options[:custom_object_properties] || {}
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/PerceivedComplexity
 
     ##
     # validate the configuration
