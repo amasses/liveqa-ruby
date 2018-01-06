@@ -7,6 +7,7 @@ if defined?(Rack)
   if defined?(Rails)
     require 'liveqa/plugins/rails/railtie'
     require 'liveqa/plugins/rails/middleware_data'
+    require 'liveqa/plugins/rails/data'
   end
 end
 

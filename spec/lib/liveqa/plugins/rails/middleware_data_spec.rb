@@ -19,16 +19,9 @@ describe LiveQA::Plugins::Rails::MiddlewareData do
       before { middleware.store_data(request) }
 
       let(:expected) {{
-        environement: kind_of(String),
         request: {
           id: '42a'
-        },
-        stack: [
-          {
-            name: 'rails',
-            version: kind_of(String)
-          }
-        ]
+        }
       }}
 
       it { expect(LiveQA::Store.store).to match(expected) }
@@ -37,31 +30,17 @@ describe LiveQA::Plugins::Rails::MiddlewareData do
     context 'update the store' do
       before do
         LiveQA::Store.set(:request, { xhr: false })
-        LiveQA::Store.set(:stack, [{ name: 'rack' }])
       end
       before { middleware.store_data(request) }
 
       let(:expected) {{
-        environement: kind_of(String),
         request: {
           id: '42a',
           xhr: false
-        },
-        stack: [
-          {
-            name: 'rack'
-          },
-          {
-            name: 'rails',
-            version: kind_of(String)
-          }
-        ]
+        }
       }}
 
       it { expect(LiveQA::Store.store).to match(expected) }
     end
-
-
   end
-
 end

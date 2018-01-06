@@ -29,7 +29,14 @@ describe LiveQA::Event do
       server: {
         host: kind_of(String),
         pid: kind_of(Numeric)
-      }
+      },
+      environement: kind_of(String),
+      stack: [
+        {
+          name: 'rails',
+          version: kind_of(String)
+        }
+      ]
     }}
 
     it { expect(LiveQA::Event).to receive(:create).with(expected_arg, { no_ssl: true }).and_return(response) }
@@ -63,7 +70,14 @@ describe LiveQA::Event do
       server: {
         host: kind_of(String),
         pid: kind_of(Numeric)
-      }
+      },
+      environement: kind_of(String),
+      stack: [
+        {
+          name: 'rails',
+          version: kind_of(String)
+        }
+      ]
     }}
 
     it { expect(LiveQA::Event).to receive(:create).with(expected_arg, { no_ssl: true }).and_return(response) }

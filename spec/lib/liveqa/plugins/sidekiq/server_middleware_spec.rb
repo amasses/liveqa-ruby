@@ -54,13 +54,6 @@ describe LiveQA::Plugins::Sidekiq::ServerMiddleware do
           retry_number: 1,
           failed_at: '2017-12-15T01:09:26Z'
         },
-        environement: kind_of(String),
-        stack: [
-          {
-            name: 'rails',
-            version: kind_of(String)
-          }
-        ]
       }}
 
       it { expect(LiveQA::Store.store).to match(expected) }

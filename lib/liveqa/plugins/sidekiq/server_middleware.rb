@@ -11,7 +11,6 @@ module LiveQA
         def call(_worker, job, _queue)
           LiveQA::Store.load_from_hash(job['liveqa_store'])
           store_worker_data(job)
-          LiveQA::Plugins::Rails::MiddlewareData.store_data if defined?(::Rails)
           yield
         ensure
           LiveQA::Store.clear!

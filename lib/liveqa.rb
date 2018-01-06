@@ -68,6 +68,7 @@ module LiveQA
 
       payload[:type] = 'track'
       payload[:name] = name
+      Plugins::Rails::Data.store_data if defined?(::Rails)
 
       payload = Event.build_payload(payload)
 
@@ -93,6 +94,7 @@ module LiveQA
 
       payload[:type]    = 'identify'
       payload[:user_id] = user_id
+      Plugins::Rails::Data.store_data if defined?(::Rails)
 
       payload = Event.build_payload(payload)
 
