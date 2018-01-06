@@ -3,6 +3,8 @@ require 'securerandom'
 require 'net/http'
 require 'ostruct'
 require 'json'
+require 'time'
+require 'cgi'
 
 # Async
 require 'liveqa/async_handlers/base'
