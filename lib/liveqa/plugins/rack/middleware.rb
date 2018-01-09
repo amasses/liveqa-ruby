@@ -18,7 +18,7 @@ module LiveQA
           request = ::Rack::Request.new(env)
 
           store_tracker(request)
-          store_request_data(request)
+          store_request_data(request, env)
           store_stack
 
           LiveQA::Plugins::Rails::MiddlewareData.store_data(request) if defined?(::Rails)
@@ -45,7 +45,7 @@ module LiveQA
           )
         end
 
-        def store_request_data(request)
+        def store_request_data(request, env)
           LiveQA::Store.set(
             :request,
             url: obfuscate_uri(request.url),
@@ -59,7 +59,8 @@ module LiveQA
             user_agent: request.user_agent,
             ip: request.ip,
             get_params: obfuscation_get_params(request, 'GET'),
-            post_params: obfuscation_get_params(request, 'POST')
+            post_params: obfuscation_get_params(request, 'POST'),
+            headers: obfuscate_headers(env)
           )
 
           LiveQA::Store.bulk_set(
@@ -110,6 +111,24 @@ module LiveQA
         def obfuscation_get_params(request, type)
           Util.deep_obfuscate_value(
             request.send(type),
+            LiveQA.configurations.obfuscated_fields
+          )
+        rescue
+          {}
+        end
+
+        def obfuscate_headers(env)
+          skip_headers = %w[HTTP_USER_AGENT HTTP_COOKIE HTTP_REFERER HTTP_HOST]
+
+          headers = env.keys.grep(/^HTTP_|^CONTENT_TYPE$|^CONTENT_LENGTH$/).each_with_object({}) do |key, hash|
+            next if skip_headers.include?(key)
+            name = key.gsub(/^HTTP_/, '').split('_').map(&:capitalize).join('-')
+
+            hash[name] = env[key]
+          end
+
+          Util.deep_obfuscate_value(
+            headers,
             LiveQA.configurations.obfuscated_fields
           )
         rescue
