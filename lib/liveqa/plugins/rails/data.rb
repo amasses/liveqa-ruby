@@ -17,6 +17,8 @@ module LiveQA
           def store_framework
             stack = LiveQA::Store.get(:stack) || []
 
+            return if stack.any? { |values| values[:name] == 'rails' }
+
             LiveQA::Store.set(
               :stack,
               stack.push(

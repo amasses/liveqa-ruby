@@ -70,6 +70,7 @@ module LiveQA
 
         def store_stack
           stack = LiveQA::Store.get(:stack) || []
+          return if stack.any? { |values| values[:name] == 'rack' }
 
           LiveQA::Store.set(
             :stack,
