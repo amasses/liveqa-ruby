@@ -28,6 +28,7 @@ require 'liveqa/api_operation/save'
 require 'liveqa/event'
 require 'liveqa/group'
 require 'liveqa/identity'
+require 'liveqa/watcher'
 
 # Plugins
 require 'liveqa/plugins'
@@ -70,7 +71,7 @@ module LiveQA
       payload[:name] = name
       Plugins::Rails::Data.store_data if defined?(::Rails)
 
-      payload = Event.build_payload(payload)
+      payload = Message.extended.merge(payload)
 
       if configurations.async_handler
         return configurations.async_handler.enqueue('LiveQA::Event', 'create', payload, request_options)
@@ -96,7 +97,7 @@ module LiveQA
       payload[:user_id] = user_id
       Plugins::Rails::Data.store_data if defined?(::Rails)
 
-      payload = Event.build_payload(payload)
+      payload = Message.extended.merge(payload)
 
       if configurations.async_handler
         return configurations.async_handler.enqueue('LiveQA::Event', 'create', payload, request_options)
@@ -118,8 +119,7 @@ module LiveQA
     def set_group(group_id, payload = {}, request_options = {})
       return true unless configurations.enabled
 
-      payload[:message_id] = SecureRandom.uuid
-      payload[:timestamp] = Time.now.utc.iso8601
+      payload = Message.base.merge(payload)
 
       if configurations.async_handler
         return configurations.async_handler.enqueue('LiveQA::Group', 'update', group_id, payload, request_options)
@@ -141,8 +141,7 @@ module LiveQA
     def set_identity(user_id, payload = {}, request_options = {})
       return true unless configurations.enabled
 
-      payload[:message_id] = SecureRandom.uuid
-      payload[:timestamp] = Time.now.utc.iso8601
+      payload = Message.base.merge(payload)
 
       if configurations.async_handler
         return configurations.async_handler.enqueue('LiveQA::Identity', 'update', user_id, payload, request_options)
@@ -151,6 +150,31 @@ module LiveQA
       identity = Identity.update(user_id, payload, request_options)
 
       identity.successful?
+    end
+
+    ##
+    # Send a create a watcher
+    #
+    # @param [String|Integer] template flow name or id
+    # @param [Hash] payload to be send
+    # @param [Hash] options for the request
+    #
+    # @return [LiveQA::Object] response from the server
+    def watch(id_or_name, payload = {}, request_options = {})
+      return true unless configurations.enabled
+
+      payload[:template_flow] = id_or_name
+      payload = Message.base.merge(payload)
+
+      payload.delete(:session_tracker_id) if payload.delete(:without_session)
+
+      if configurations.async_handler
+        return configurations.async_handler.enqueue('LiveQA::Watcher', 'create', payload, request_options)
+      end
+
+      watcher = Watcher.create(payload, request_options)
+
+      watcher.successful?
     end
 
   end

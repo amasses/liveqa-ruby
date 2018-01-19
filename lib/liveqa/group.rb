@@ -6,7 +6,7 @@ module LiveQA
   #
   # @example: Usage
   #
-  #   request = LiveQA::Group.set('dc0b28d8a220', properties: { name: 'My Group' }) #=> #<LiveQA::Response...>
+  #   request = LiveQA::Group.update('dc0b28d8a220', properties: { name: 'My Group' }) #=> #<LiveQA::Response...>
   #
   class Group < APIResource
     include LiveQA::APIOperation::Save

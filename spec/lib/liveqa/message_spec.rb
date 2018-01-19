@@ -3,7 +3,31 @@ require 'spec_helper'
 describe LiveQA::Message do
   subject(:base) { LiveQA::Message }
 
-  describe '#to_h' do
+  describe '#base' do
+    let(:expected_hash) {{
+      message_id: kind_of(String),
+      timestamp: kind_of(String),
+      session_tracker_id: kind_of(String),
+    }}
+
+    it { expect(base.base).to match(expected_hash) }
+
+    context 'with store' do
+      before do
+       LiveQA::Store.set(:tracker_id, 'hello')
+     end
+
+      let(:expected_hash) {{
+        message_id: kind_of(String),
+        timestamp: kind_of(String),
+        session_tracker_id: 'hello',
+      }}
+
+      it { expect(base.base).to match(expected_hash) }
+    end
+  end
+
+  describe '#extended' do
     let(:expected_hash) {{
       tracker_id: kind_of(String),
       message_id: kind_of(String),
@@ -20,7 +44,7 @@ describe LiveQA::Message do
       }
     }}
 
-    it { expect(base.to_h).to match(expected_hash) }
+    it { expect(base.extended).to match(expected_hash) }
 
     context 'with store' do
       before do
@@ -94,7 +118,7 @@ describe LiveQA::Message do
         environement: 'production'
       }}
 
-      it { expect(base.to_h).to match(expected_hash) }
+      it { expect(base.extended).to match(expected_hash) }
     end
   end
 

@@ -6,19 +6,24 @@ module LiveQA
   class Message
     class << self
 
-      def to_h
+      def base
         Util.deep_compact(
-          tracker_id: tracker_id,
           message_id: SecureRandom.uuid,
           timestamp: Time.now.utc.iso8601,
-          session_tracker_id: LiveQA::Store.get(:tracker_id),
+          session_tracker_id: tracker_id
+        )
+      end
+
+      def extended
+        Util.deep_compact(
+          tracker_id: tracker_id,
           library: library,
           server: server,
           request: LiveQA::Store.get(:request),
           worker: LiveQA::Store.get(:worker),
           stack: LiveQA::Store.get(:stack),
           environement: LiveQA::Store.get(:environement)
-        )
+        ).merge(base)
       end
 
       private

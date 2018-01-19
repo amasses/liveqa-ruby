@@ -30,16 +30,9 @@ describe LiveQA::Event do
         host: kind_of(String),
         pid: kind_of(Numeric)
       },
-      environement: kind_of(String),
-      stack: [
-        {
-          name: 'rails',
-          version: kind_of(String)
-        }
-      ]
     }}
 
-    it { expect(LiveQA::Event).to receive(:create).with(expected_arg, { no_ssl: true }).and_return(response) }
+    it { expect(LiveQA::Event).to receive(:create).with(hash_including(expected_arg), { no_ssl: true }).and_return(response) }
 
     context 'not enabled' do
       before { LiveQA.configurations.enabled = false }
@@ -71,16 +64,9 @@ describe LiveQA::Event do
         host: kind_of(String),
         pid: kind_of(Numeric)
       },
-      environement: kind_of(String),
-      stack: [
-        {
-          name: 'rails',
-          version: kind_of(String)
-        }
-      ]
     }}
 
-    it { expect(LiveQA::Event).to receive(:create).with(expected_arg, { no_ssl: true }).and_return(response) }
+    it { expect(LiveQA::Event).to receive(:create).with(hash_including(expected_arg), { no_ssl: true }).and_return(response) }
 
     context 'not enabled' do
       before { LiveQA.configurations.enabled = false }
@@ -99,6 +85,7 @@ describe LiveQA::Event do
       },
       message_id: kind_of(String),
       timestamp: kind_of(String),
+      session_tracker_id: kind_of(String),
     }}
 
     it { expect(LiveQA::Group).to receive(:update).with(42, expected_arg, { no_ssl: true }).and_return(response) }
@@ -120,6 +107,7 @@ describe LiveQA::Event do
       },
       message_id: kind_of(String),
       timestamp: kind_of(String),
+      session_tracker_id: kind_of(String),
     }}
 
     it { expect(LiveQA::Identity).to receive(:update).with(42, expected_arg, { no_ssl: true }).and_return(response) }
@@ -128,6 +116,46 @@ describe LiveQA::Event do
       before { LiveQA.configurations.enabled = false }
 
       it { expect(LiveQA::Identity).to_not receive(:update) }
+    end
+  end
+
+  describe '.watch' do
+    let(:response) { double('LiveQA::Identity', successful?: true) }
+
+
+    context 'with session' do
+      after { LiveQA.watch('My Flow', { expected_times: 42 }, { no_ssl: true }) }
+
+      let(:expected_arg) {{
+        template_flow: 'My Flow',
+        expected_times: 42,
+        message_id: kind_of(String),
+        timestamp: kind_of(String),
+        session_tracker_id: kind_of(String),
+      }}
+
+      it { expect(LiveQA::Watcher).to receive(:create).with(expected_arg, { no_ssl: true }).and_return(response) }
+    end
+
+    context 'with session' do
+      after { LiveQA.watch('My Flow', { expected_times: 42, without_session: true }, { no_ssl: true }) }
+
+      let(:expected_arg) {{
+        template_flow: 'My Flow',
+        expected_times: 42,
+        message_id: kind_of(String),
+        timestamp: kind_of(String),
+      }}
+
+      it { expect(LiveQA::Watcher).to receive(:create).with(expected_arg, { no_ssl: true }).and_return(response) }
+    end
+
+    context 'not enabled' do
+      after { LiveQA.watch('My Flow', { expected_times: 42 }, { no_ssl: true }) }
+
+      before { LiveQA.configurations.enabled = false }
+
+      it { expect(LiveQA::Watcher).to_not receive(:create) }
     end
   end
 

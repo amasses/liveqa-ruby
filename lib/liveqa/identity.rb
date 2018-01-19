@@ -6,7 +6,7 @@ module LiveQA
   #
   # @example: Usage
   #
-  #   request = LiveQA::Identity.set('dc0b28d8a220', properties: { name: 'My Identity' }) #=> #<LiveQA::Response...>
+  #   request = LiveQA::Identity.update('dc0b28d8a220', properties: { name: 'My Identity' }) #=> #<LiveQA::Response...>
   #
   class Identity < APIResource
     @resource_name = 'identities'
