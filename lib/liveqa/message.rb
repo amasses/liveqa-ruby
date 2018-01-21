@@ -9,7 +9,7 @@ module LiveQA
       def base
         Util.deep_compact(
           message_id: SecureRandom.uuid,
-          timestamp: Time.now.utc.iso8601,
+          timestamp: Time.now.utc.iso8601(3),
           session_tracker_id: tracker_id
         )
       end

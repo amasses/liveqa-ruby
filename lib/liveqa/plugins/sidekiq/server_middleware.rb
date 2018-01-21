@@ -36,7 +36,7 @@ module LiveQA
         end
 
         def convert_to_iso8601(int_time)
-          Time.at(int_time).utc.iso8601
+          Time.at(int_time).utc.iso8601(3)
         rescue
           nil
         end
