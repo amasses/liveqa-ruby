@@ -67,6 +67,10 @@ module LiveQA
     attr_accessor :custom_object_properties
 
     ##
+    # @return [Hash] metadata to be attach to the payload
+    attr_accessor :metadata
+
+    ##
     # @param [Hash{Symbol=>Object}]
     # Initialize and validate the configuration
     # rubocop:disable Metrics/CyclomaticComplexity
@@ -83,6 +87,7 @@ module LiveQA
       self.async_options = options[:async_options] || {}
       self.async_options = options[:async_options] || {}
       self.custom_object_properties = options[:custom_object_properties] || {}
+      self.metadata = options[:metadata]
     end
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/PerceivedComplexity

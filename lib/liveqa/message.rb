@@ -10,7 +10,8 @@ module LiveQA
         Util.deep_compact(
           message_id: SecureRandom.uuid,
           timestamp: Time.now.utc.iso8601(3),
-          session_tracker_id: tracker_id
+          session_tracker_id: tracker_id,
+          metadata: metadata
         )
       end
 
@@ -48,6 +49,23 @@ module LiveQA
           pid: Process.pid,
           software: LiveQA::Store.get(:server_software)
         }
+      end
+
+      def metadata
+        return nil if LiveQA.configurations.metadata.nil?
+
+        LiveQA.configurations.metadata.each_with_object({}) do |(key, value), hash|
+          if value.is_a?(Proc)
+            begin
+              hash[key] = value.call
+            rescue
+              nil
+            end
+            next
+          end
+
+          hash[key] = value
+        end
       end
 
     end

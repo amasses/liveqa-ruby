@@ -47,12 +47,12 @@ describe LiveQA::Plugins::Sidekiq::ServerMiddleware do
           queue: 'default',
           class: 'MyWorker',
           id: '24cc849f71325b62ef470901',
-          created_at: '2017-12-15T01:03:59Z',
-          process_at: '2017-12-15T01:12:08Z',
+          created_at: '2017-12-15T01:03:59.256Z',
+          process_at: '2017-12-15T01:12:08.827Z',
           args: ['42'],
           retried: true,
           retry_number: 1,
-          failed_at: '2017-12-15T01:09:26Z'
+          failed_at: '2017-12-15T01:09:26.646Z'
         },
       }}
 

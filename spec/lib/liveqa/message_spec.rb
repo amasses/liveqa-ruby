@@ -25,6 +25,51 @@ describe LiveQA::Message do
 
       it { expect(base.base).to match(expected_hash) }
     end
+
+    context 'with metadata' do
+
+
+      let(:expected_hash) {{
+        message_id: kind_of(String),
+        timestamp: kind_of(String),
+        session_tracker_id: kind_of(String),
+        metadata: {
+          deployment_id: 42
+        }
+      }}
+
+      context 'hash type' do
+        before do
+          LiveQA.configurations.metadata = {
+            deployment_id: 42
+          }
+        end
+
+        it { expect(base.base).to match(expected_hash) }
+      end
+
+      context 'proc type' do
+        before do
+          LiveQA.configurations.metadata = {
+            deployment_id: lambda { 84 / 2 }
+          }
+        end
+
+        it { expect(base.base).to match(expected_hash) }
+      end
+
+      context 'proc & raise type' do
+        before do
+          LiveQA.configurations.metadata = {
+            deployment_id: -> { 84 / 2 },
+            other_id: -> { hello }
+          }
+        end
+
+        it { expect(base.base).to match(expected_hash) }
+      end
+    end
+
   end
 
   describe '#extended' do
