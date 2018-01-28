@@ -107,9 +107,10 @@ module LiveQA
       def headers
         {
           headers: {
-            accept:       'application/json',
+            accept: 'application/json',
             content_type: 'application/json',
-            x_request_key: configurations.api_key
+            x_account_token: configurations.account_token,
+            x_environement_token: configurations.environement_token
           }
         }
       end

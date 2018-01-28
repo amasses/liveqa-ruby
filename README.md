@@ -20,7 +20,8 @@ gem 'liveqa'
 
 ```ruby
 LiveQA.configure do |config|
-  config.api_key = 'your-api-key'
+  config.account_token = 'acc_xx'
+  config.environement_token = 'env_xx'
 end
 ```
 

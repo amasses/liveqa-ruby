@@ -27,8 +27,12 @@ module LiveQA
     ].freeze
 
     ##
-    # @return [String] API key
-    attr_accessor :api_key
+    # @return [String] API account token
+    attr_accessor :account_token
+
+    ##
+    # @return [String] API environement token
+    attr_accessor :environement_token
 
     ##
     # @return [String] API host
@@ -76,7 +80,8 @@ module LiveQA
     # rubocop:disable Metrics/CyclomaticComplexity
     # rubocop:disable Metrics/PerceivedComplexity
     def initialize(options = {})
-      self.api_key = options[:api_key]
+      self.account_token = options[:account_token]
+      self.environement_token = options[:environement_token]
       self.api_host = options[:api_host] || 'api.liveqa.io'
       self.api_version = options[:api_version] || 'v1'
       self.proxy_url = options[:proxy_url]
@@ -99,7 +104,7 @@ module LiveQA
     def valid!
       format!
 
-      %i[api_key api_host api_version].each do |field|
+      %i[account_token environement_token api_host api_version].each do |field|
         validate_presence(field)
       end
 

@@ -47,7 +47,8 @@ module LiveQA
     #
     # @example Default configuration
     #   LiveQA.configure do |config|
-    #     config.api_key   = 'your-api-key'
+    #      config.account_token = 'acc_xx'
+    #      config.environement_token = 'env_xx'
     #   end
     def configure
       yield @configurations = LiveQA::Config.new
