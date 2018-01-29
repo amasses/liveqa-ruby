@@ -2,7 +2,7 @@ module LiveQA
   ##
   # == LiveQA \Store
   #
-  # Store environement data
+  # Store environment data
   #
   class Store
     class << self

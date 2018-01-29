@@ -18,7 +18,7 @@ describe LiveQA::APIResource do
             accept:               'application/json',
             content_type:         'application/json',
             x_account_token:      'acc_xx',
-            x_environement_token: 'env_xx'
+            x_environment_token: 'env_xx'
           }
         }}
 
@@ -37,7 +37,7 @@ describe LiveQA::APIResource do
             accept:               'application/json',
             content_type:         'application/json',
             x_account_token:      'acc_xx',
-            x_environement_token: 'env_xx'
+            x_environment_token: 'env_xx'
           }
         }}
 
@@ -56,7 +56,7 @@ describe LiveQA::APIResource do
             accept:               'application/json',
             content_type:         'application/json',
             x_account_token:      'acc_xx',
-            x_environement_token: 'env_xx'
+            x_environment_token: 'env_xx'
           }
         }}
 
@@ -75,11 +75,11 @@ describe LiveQA::APIResource do
             accept:               'application/json',
             content_type:         'application/json',
             x_account_token:      'acc_42',
-            x_environement_token: 'env_42'
+            x_environment_token: 'env_42'
           }
         }}
 
-        after { LiveQA::APIResource.request(:post, '/test', {}, account_token: 'acc_42', environement_token: 'env_42') }
+        after { LiveQA::APIResource.request(:post, '/test', {}, account_token: 'acc_42', environment_token: 'env_42') }
 
         it { expect(LiveQA::Request).to receive(:execute).with(expected_payload).and_return(response)  }
       end

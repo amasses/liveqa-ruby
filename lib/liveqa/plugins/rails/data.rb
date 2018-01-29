@@ -7,7 +7,7 @@ module LiveQA
 
           def store_data
             LiveQA::Store.bulk_set(
-              environement: ::Rails.env
+              environment: ::Rails.env
             )
             store_framework
           end

@@ -23,7 +23,7 @@ module LiveQA
           request: LiveQA::Store.get(:request),
           worker: LiveQA::Store.get(:worker),
           stack: LiveQA::Store.get(:stack),
-          environement: LiveQA::Store.get(:environement)
+          environment: LiveQA::Store.get(:environment)
         ).merge(base)
       end
 

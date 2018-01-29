@@ -26,7 +26,7 @@ LiveQA.configure do |config|
 
   ## 
   # Environment token can be found inside your environment settings
-  config.environement_token = 'env_xx'
+  config.environment_token = 'env_xx'
   
   ## 
   # If you use a proxy.

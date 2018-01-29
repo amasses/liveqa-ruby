@@ -4,20 +4,20 @@ describe LiveQA::Config do
   subject(:config) { LiveQA::Config.new(params) }
 
   describe  '#initialize' do
-    let(:params) {{ account_token: 'acc_xx', environement_token: 'env_xx' }}
+    let(:params) {{ account_token: 'acc_xx', environment_token: 'env_xx' }}
 
     it { expect(config.valid!).to be_truthy }
 
-    %i[account_token environement_token api_host api_version].each do |field|
+    %i[account_token environment_token api_host api_version].each do |field|
       context "validate #{field}" do
-        let(:params) {{ account_token: 'acc_xx', environement_token: 'env_xx', api_host: 'host', api_version: 'v1'  }.merge(field => '')}
+        let(:params) {{ account_token: 'acc_xx', environment_token: 'env_xx', api_host: 'host', api_version: 'v1'  }.merge(field => '')}
 
         it { expect { config.valid! }.to raise_error(LiveQA::ConfigurationError, "#{field} can't be blank") }
       end
     end
 
     context 'format obfuscated_fields' do
-      let(:params) {{ account_token: 'acc_xx', environement_token: 'env_xx', obfuscated_fields: %i[another_password password_confirmation] }}
+      let(:params) {{ account_token: 'acc_xx', environment_token: 'env_xx', obfuscated_fields: %i[another_password password_confirmation] }}
 
       before { config.valid! }
 
@@ -28,7 +28,7 @@ describe LiveQA::Config do
       context 'sidekiq' do
         let(:params) {{
           account_token: 'acc_xx',
-          environement_token: 'env_xx',
+          environment_token: 'env_xx',
           async_handler: :sidekiq
         }}
         before { config.valid! }

@@ -110,7 +110,7 @@ module LiveQA
             accept: 'application/json',
             content_type: 'application/json',
             x_account_token: options.delete(:account_token) || configurations.account_token,
-            x_environement_token: options.delete(:environement_token) || configurations.environement_token
+            x_environment_token: options.delete(:environment_token) || configurations.environment_token
           }
         }
       end

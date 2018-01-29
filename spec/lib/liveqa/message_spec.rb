@@ -118,7 +118,7 @@ describe LiveQA::Message do
       )
 
       LiveQA::Store.bulk_set(
-        environement:    'production',
+        environment:    'production',
         server_software: 'WEBrick/1.3.1 (Ruby/2.2.7/2017-03-28)'
       )
      end
@@ -160,7 +160,7 @@ describe LiveQA::Message do
           process_at: '2017-12-15T03:45:10Z',
           args: ['LiveQA::Event']
         },
-        environement: 'production'
+        environment: 'production'
       }}
 
       it { expect(base.extended).to match(expected_hash) }
