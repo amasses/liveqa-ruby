@@ -71,7 +71,7 @@ module LiveQA
           payload: payload.to_json,
           proxy:   configurations.proxy_url,
           use_ssl: configurations.http_secure
-        ).merge(headers).merge(options)
+        ).merge(headers(options)).merge(options)
 
         Request.execute(request_options).body
       rescue LiveQA::RequestError => error
@@ -104,13 +104,13 @@ module LiveQA
         }
       end
 
-      def headers
+      def headers(options)
         {
           headers: {
             accept: 'application/json',
             content_type: 'application/json',
-            x_account_token: configurations.account_token,
-            x_environement_token: configurations.environement_token
+            x_account_token: options.delete(:account_token) || configurations.account_token,
+            x_environement_token: options.delete(:environement_token) || configurations.environement_token
           }
         }
       end
