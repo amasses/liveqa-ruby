@@ -60,7 +60,6 @@ module LiveQA
     # Send a track event to the server
     #
     # @param [String] event name
-    # @param [String] user id from your database
     # @param [Hash] payload to be send
     # @param [Hash] options for the request
     #

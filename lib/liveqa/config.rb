@@ -90,7 +90,6 @@ module LiveQA
       self.obfuscated_fields = options[:obfuscated_fields] || []
       self.async_handler = options[:async_handler]
       self.async_options = options[:async_options] || {}
-      self.async_options = options[:async_options] || {}
       self.custom_object_properties = options[:custom_object_properties] || {}
       self.metadata = options[:metadata]
     end
