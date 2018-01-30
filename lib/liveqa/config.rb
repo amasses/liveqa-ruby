@@ -31,8 +31,12 @@ module LiveQA
     attr_accessor :account_token
 
     ##
-    # @return [String] API environment token
-    attr_accessor :environment_token
+    # @return [String] API space name
+    attr_accessor :space_name
+
+    ##
+    # @return [String] API environment name
+    attr_accessor :environment_name
 
     ##
     # @return [String] API host
@@ -81,7 +85,8 @@ module LiveQA
     # rubocop:disable Metrics/PerceivedComplexity
     def initialize(options = {})
       self.account_token = options[:account_token]
-      self.environment_token = options[:environment_token]
+      self.space_name = options[:space_name]
+      self.environment_name = options[:environment_name]
       self.api_host = options[:api_host] || 'api.liveqa.io'
       self.api_version = options[:api_version] || 'v1'
       self.proxy_url = options[:proxy_url]
@@ -103,7 +108,7 @@ module LiveQA
     def valid!
       format!
 
-      %i[account_token environment_token api_host api_version].each do |field|
+      %i[account_token space_name environment_name api_host api_version].each do |field|
         validate_presence(field)
       end
 

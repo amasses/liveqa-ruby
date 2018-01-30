@@ -15,10 +15,11 @@ describe LiveQA::APIResource do
           payload: '{}',
           use_ssl: false,
           headers: {
-            accept:               'application/json',
-            content_type:         'application/json',
-            x_account_token:      'acc_xx',
-            x_environment_token: 'env_xx'
+            accept:             'application/json',
+            content_type:       'application/json',
+            x_account_token:    'acc_xx',
+            x_space_name:       'LiveQA',
+            x_environment_name: 'test'
           }
         }}
 
@@ -34,10 +35,11 @@ describe LiveQA::APIResource do
           payload: "{\"test\":true}",
           use_ssl: false,
           headers: {
-            accept:               'application/json',
-            content_type:         'application/json',
-            x_account_token:      'acc_xx',
-            x_environment_token: 'env_xx'
+            accept:             'application/json',
+            content_type:       'application/json',
+            x_account_token:    'acc_xx',
+            x_space_name:       'LiveQA',
+            x_environment_name: 'test'
           }
         }}
 
@@ -53,10 +55,11 @@ describe LiveQA::APIResource do
           payload: "{\"test\":true}",
           use_ssl: false,
           headers: {
-            accept:               'application/json',
-            content_type:         'application/json',
-            x_account_token:      'acc_xx',
-            x_environment_token: 'env_xx'
+            accept:             'application/json',
+            content_type:       'application/json',
+            x_account_token:    'acc_xx',
+            x_space_name:       'LiveQA',
+            x_environment_name: 'test'
           }
         }}
 
@@ -72,14 +75,15 @@ describe LiveQA::APIResource do
           payload: '{}',
           use_ssl: false,
           headers: {
-            accept:               'application/json',
-            content_type:         'application/json',
-            x_account_token:      'acc_42',
-            x_environment_token: 'env_42'
+            accept:             'application/json',
+            content_type:       'application/json',
+            x_account_token:    'acc_42',
+            x_space_name:       'MySpace',
+            x_environment_name: 'staging'
           }
         }}
 
-        after { LiveQA::APIResource.request(:post, '/test', {}, account_token: 'acc_42', environment_token: 'env_42') }
+        after { LiveQA::APIResource.request(:post, '/test', {}, account_token: 'acc_42', space_name: 'MySpace', environment_name: 'staging') }
 
         it { expect(LiveQA::Request).to receive(:execute).with(expected_payload).and_return(response)  }
       end

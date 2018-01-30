@@ -16,7 +16,8 @@ RSpec.configure do |config|
     LiveQA.configure do |config|
       config.api_host  = 'localhost:4003'
       config.account_token = 'acc_xx'
-      config.environment_token = 'env_xx'
+      config.space_name = 'LiveQA'
+      config.environment_name = 'test'
       config.http_secure = false
     end
   end

@@ -48,7 +48,8 @@ module LiveQA
     # @example Default configuration
     #   LiveQA.configure do |config|
     #      config.account_token = 'acc_xx'
-    #      config.environment_token = 'env_xx'
+    #      config.space_name = 'LiveQA'
+    #      config.environment_name = 'production'
     #   end
     def configure
       yield @configurations = LiveQA::Config.new

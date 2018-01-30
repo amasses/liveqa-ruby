@@ -24,9 +24,13 @@ LiveQA.configure do |config|
   # Account token can be found inside your environment settings
   config.account_token = 'acc_xx'
 
-  ## 
-  # Environment token can be found inside your environment settings
-  config.environment_token = 'env_xx'
+  ##
+  # The name of your space
+  config.space_name = 'LiveQA'
+
+  ##
+  # The name of your environement
+  config.environment_name = 'production'
   
   ## 
   # If you use a proxy.
