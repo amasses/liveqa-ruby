@@ -24,7 +24,7 @@ module LiveQA
       #
       # @return [LiveQA::LiveQAObject]
       def initialize_from(response, object = new)
-        object.load_response_api(response.is_a?(Hash) ? response : JSON.parse(response))
+        object.load_response_api(response.is_a?(Hash) ? response : Util.safe_json_parse(response))
         object.update_attributes(LiveQA::Util.except_keys(object.raw, :data))
         if object.raw[:object] == 'list'
           object.raw[:data].each do |response_object|

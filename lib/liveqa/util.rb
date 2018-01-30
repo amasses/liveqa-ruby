@@ -174,6 +174,15 @@ module LiveQA
         )
       end
 
+      ##
+      # Parse JSON without raise
+      #
+      def safe_json_parse(data)
+        JSON.parse(data.to_s)
+      rescue JSON::ParserError
+        {}
+      end
+
       private
 
       def deep_transform_keys_in_object(object, &block)

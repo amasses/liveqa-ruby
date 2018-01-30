@@ -96,6 +96,18 @@ describe LiveQA::LiveQAObject do
       it { expect(instance.current_page).to eq(10) }
       it { expect(instance.links[:self]).to eq('http://www.liveqa.io/test') }
     end
+
+    context 'with empty string' do
+      subject(:instance) { klass.initialize_from('') }
+
+      it { is_expected.to be_successful }
+    end
+
+    context 'with nil' do
+      subject(:instance) { klass.initialize_from(nil) }
+
+      it { is_expected.to be_successful }
+    end
   end
 
   describe '#update_from' do
