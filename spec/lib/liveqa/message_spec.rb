@@ -14,7 +14,7 @@ describe LiveQA::Message do
 
     context 'with store' do
       before do
-       LiveQA::Store.set(:tracker_id, 'hello')
+       LiveQA::Store.set(:session_tracker_id, 'hello')
      end
 
       let(:expected_hash) {{
@@ -74,7 +74,6 @@ describe LiveQA::Message do
 
   describe '#extended' do
     let(:expected_hash) {{
-      tracker_id: kind_of(String),
       message_id: kind_of(String),
       timestamp: kind_of(String),
       session_tracker_id: kind_of(String),
@@ -93,7 +92,7 @@ describe LiveQA::Message do
 
     context 'with store' do
       before do
-       LiveQA::Store.set(:tracker_id, 'hello')
+       LiveQA::Store.set(:session_tracker_id, 'hello')
        LiveQA::Store.set(:request,
         url:        'http://www.test.com/',
         ssl:        true,
@@ -124,7 +123,6 @@ describe LiveQA::Message do
      end
 
       let(:expected_hash) {{
-        tracker_id: 'hello',
         message_id: kind_of(String),
         timestamp: kind_of(String),
         session_tracker_id: 'hello',

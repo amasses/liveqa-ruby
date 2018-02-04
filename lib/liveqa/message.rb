@@ -10,14 +10,13 @@ module LiveQA
         Util.deep_compact(
           message_id: SecureRandom.uuid,
           timestamp: Time.now.utc.iso8601(3),
-          session_tracker_id: tracker_id,
+          session_tracker_id: session_tracker_id,
           metadata: metadata
         )
       end
 
       def extended
         Util.deep_compact(
-          tracker_id: tracker_id,
           library: library,
           server: server,
           request: LiveQA::Store.get(:request),
@@ -29,10 +28,10 @@ module LiveQA
 
       private
 
-      def tracker_id
-        return LiveQA::Store.get(:tracker_id) if LiveQA::Store.exist?(:tracker_id)
+      def session_tracker_id
+        return LiveQA::Store.get(:session_tracker_id) if LiveQA::Store.exist?(:session_tracker_id)
 
-        LiveQA::Store.set(:tracker_id, SecureRandom.uuid)
+        LiveQA::Store.set(:session_tracker_id, SecureRandom.uuid)
       end
 
       def library

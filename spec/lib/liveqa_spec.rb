@@ -16,7 +16,6 @@ describe LiveQA::Event do
       name:    'test',
       message_id: kind_of(String),
       timestamp: kind_of(String),
-      tracker_id: kind_of(String),
       session_tracker_id: kind_of(String),
       properties: {
         total: 10
