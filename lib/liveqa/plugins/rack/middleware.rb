@@ -22,11 +22,9 @@ module LiveQA
           store_stack
 
           LiveQA::Plugins::Rails::MiddlewareData.store_data(request) if defined?(::Rails)
-
           status, headers, body = @app.call(env)
 
-          write_cookie_session_tracker_id!(headers)
-
+          write_cookie_session_tracker_id!(headers, env)
           [status, headers, body]
         ensure
           LiveQA::Store.clear!
@@ -81,12 +79,13 @@ module LiveQA
           )
         end
 
-        def write_cookie_session_tracker_id!(headers)
+        def write_cookie_session_tracker_id!(headers, env)
           ::Rack::Utils.set_cookie_header!(
             headers || {},
             session_tracker_id_name,
             value: LiveQA::Store.get(:session_tracker_id),
-            path: '/'
+            path: '/',
+            secure: is_https_request(env)
           )
         end
 
@@ -116,6 +115,14 @@ module LiveQA
           )
         rescue
           {}
+        end
+
+        # determines if a request is HTTPS based on headers and env variabled
+        def is_https_request(env)
+          env['HTTPS'] == 'on' ||
+          env['HTTP_X_FORWARDED_SSL'] == 'on' ||
+          env['HTTP_X_FORWARDED_PROTO'].to_s.split(',').first == 'https' ||
+          env['rack.url_scheme'] == 'https'
         end
 
         def obfuscate_headers(env)
